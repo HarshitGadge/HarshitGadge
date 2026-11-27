@@ -11,6 +11,7 @@
 <p align="center">
   <a href="https://www.linkedin.com/in/harshitg-">LinkedIn</a> ·
   <a href="mailto:harshit.gadge.1805@gmail.com">harshit.gadge.1805@gmail.com</a> ·
+  <a href="#experience">Experience</a> ·
   <a href="#try-it-live">Try it live</a> ·
   <a href="#featured-work">Featured work</a> ·
   <a href="#how-they-work">How they work</a>
@@ -20,11 +21,22 @@ I'm an AI and data engineer. I've just finished an MS in Data Science at the Uni
 
 Each of my projects comes with a number and a test that backs it up.
 
+**I'm looking for a full-time AI Engineer, Data Engineer or Data Scientist role, and I can start right away.**
+
+## Experience
+
+| Role | Where | When | What I worked on |
+|---|---|---|---|
+| **AI Engineer Intern** | Causify.AI · remote | Nov 2026 – now | AI engineering work alongside Prof. GP Saggese's research team |
+| **Research team member** | Prof. GP Saggese's team · University of Maryland | Nov 2026 – now | Agent-driven development workflows and GitHub Projects automation for the team's shared tooling |
+| **Data Analytics Engineer** | Kuhoo Finance · lending fintech, India | Oct 2023 – Jul 2024 | KYC and fraud-screening rules, AWS Glue and PySpark pipelines, A/B tests on the loan funnel |
+| **Data Analyst** | KPMG India | Jun 2023 – Sep 2023 | Customer segmentation and automated data-quality checks |
+
 ## Try it live
 
 | Demo | What you'll see |
 |---|---|
-| **[Ask my portfolio →](https://harshitgadge.github.io)** | A chat page on the RAG service from the animation above, which has indexed the design docs of the five projects below. Each glowing dot is one indexed passage; ask a question and watch the passages it uses light up, with every answer line cited to its source. It's read-only, and on a free instance the first question after a quiet spell takes about a minute. ([raw API](https://agentic-rag-service-fxsc.onrender.com/docs)) |
+| **[Ask my portfolio →](https://harshitgadge.github.io)** | A chat page on the RAG service from the animation above, which has indexed the design docs of five of the projects below (all but fraud screening). Each glowing dot is one indexed passage; ask a question and watch the passages it uses light up, with every answer line cited to its source. It's read-only, and on a free instance the first question after a quiet spell takes about a minute. ([raw API](https://agentic-rag-service-fxsc.onrender.com/docs)) |
 | **[Medicare claims dashboard →](https://hgadge-medicare-claims.streamlit.app)** | PMPM, cost concentration, readmissions and state comparisons over 108k synthetic Medicare members, built from the dbt marts. |
 
 ## Featured work
