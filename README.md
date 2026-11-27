@@ -14,7 +14,8 @@
   <a href="#experience">Experience</a> ·
   <a href="#try-it-live">Try it live</a> ·
   <a href="#featured-work">Featured work</a> ·
-  <a href="#how-they-work">How they work</a>
+  <a href="#how-they-work">How they work</a> ·
+  <a href="#notes">Notes</a>
 </p>
 
 I'm an AI and data engineer. I've just finished an MS in Data Science at the University of Maryland (GPA 3.95). I'm an **AI Engineer Intern at Causify.AI** and work on **Prof. GP Saggese's research team at UMD**. I'm also co-inventor on an **Indian patent** for electromagnetic simulation and machine learning for non-invasive lung tumor prediction.
@@ -176,19 +177,27 @@ flowchart LR
 
 </details>
 
+## Notes
+
+Short write-ups on decisions in these projects, each backed by a run in its repo.
+
+- [Why MMR is off by default in my RAG service](notes/mmr-off-by-default.md): the evaluation beat my instinct.
+- [Why the payments MERGE trusts the LSN, not the timestamp](notes/lsn-not-timestamp.md): two changes can share a millisecond.
+- [Beating the obvious baseline for high-cost Medicare members](notes/beat-the-obvious-baseline.md): 20.8% against 14.1% on a 5% list.
+
 ## Latest work
 
 <!--STATS:START-->
-In the last 30 days I merged **15** pull requests across **5** repositories and published **6** releases. <sub>Counted from the GitHub API on Nov 27, 2026.</sub>
+In the last 30 days I merged **16** pull requests across **5** repositories and published **6** releases. <sub>Counted from the GitHub API on Nov 27, 2026.</sub>
 <!--STATS:END-->
 
 <!--ACTIVITY:START-->
+- `Nov 27` merged [Publish BEIR results from a benchmark workflow, with a generated README table](https://github.com/HarshitGadge/ragbench/pull/3) in **ragbench**
 - `Nov 27` merged [Add built-in BM25 and dense retrievers](https://github.com/HarshitGadge/ragbench/pull/2) in **ragbench**
 - `Nov 27` merged [Add the core package: BEIR loader, metrics, bootstrap CIs, plug-in retrievers, CLI](https://github.com/HarshitGadge/ragbench/pull/1) in **ragbench**
 - `Nov 27` merged [Opt-in CORS so the portfolio chat page can call /query](https://github.com/HarshitGadge/agentic-rag-service/pull/4) in **agentic-rag-service**
 - `Nov 27` released [v1.0.0 — fraud screening under a review budget](https://github.com/HarshitGadge/fraud-screening/releases/tag/v1.0.0) of **fraud-screening**
 - `Nov 27` released [v1.0.0 — claims pipeline, high-cost model, live dashboard](https://github.com/HarshitGadge/medicare-claims-analytics/releases/tag/v1.0.0) of **medicare-claims-analytics**
-- `Nov 27` released [v1.0.0 — NASA GCN alerts into a medallion lakehouse](https://github.com/HarshitGadge/kafka-databricks-nasa/releases/tag/v1.0.0) of **kafka-databricks-nasa**
 <!--ACTIVITY:END-->
 
 <sub>A GitHub Action refreshes this list every morning from my public activity.</sub>
@@ -210,7 +219,7 @@ Evaluations first, then the newest CI run of each project. A GitHub Action rebui
 | Project | Run | Result | When |
 |---|---|---|---|
 | **agentic-rag-service** | BEIR SciFact retrieval eval | nDCG@10 **0.713**, p95 27.9 ms over 300 queries | [`Sep 28, 2026`](https://github.com/HarshitGadge/agentic-rag-service/blob/d9ce04a2c843cb3648f6f19f6e84bc800de06d28/eval/results/scifact.json) |
-| **ragbench** | CI: CI on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/ragbench/actions/runs/45931756226) |
+| **ragbench** | CI: CI on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/ragbench/actions/runs/45933706956) |
 | **HarshitGadge.github.io** | CI: pages build and deployment on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/HarshitGadge.github.io/actions/runs/45929672844) |
 | **agentic-rag-service** | CI: tests on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/agentic-rag-service/actions/runs/45927621820) |
 | **medicare-claims-analytics** | CI: ci on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/medicare-claims-analytics/actions/runs/45925887322) |
