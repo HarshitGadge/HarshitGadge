@@ -199,7 +199,7 @@ Short write-ups on decisions in these projects, each backed by a run in its repo
 ## Latest work
 
 <!--STATS:START-->
-In the last 30 days I merged **23** pull requests across **6** repositories and published **6** releases. <sub>Counted from the GitHub API on Nov 27, 2026.</sub>
+In the last 30 days I merged **24** pull requests across **6** repositories and published **6** releases. <sub>Counted from the GitHub API on Nov 27, 2026.</sub>
 <!--STATS:END-->
 
 <!--ACTIVITY:START-->
