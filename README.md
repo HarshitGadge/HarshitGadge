@@ -199,16 +199,16 @@ Short write-ups on decisions in these projects, each backed by a run in its repo
 ## Latest work
 
 <!--STATS:START-->
-In the last 30 days I merged **20** pull requests across **5** repositories and published **6** releases. <sub>Counted from the GitHub API on Nov 27, 2026.</sub>
+In the last 30 days I merged **23** pull requests across **6** repositories and published **6** releases. <sub>Counted from the GitHub API on Nov 27, 2026.</sub>
 <!--STATS:END-->
 
 <!--ACTIVITY:START-->
+- `Nov 27` merged [Booth fixes: tonearm, label text, phone width](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/2) in **HarshitGadge.github.io**
+- `Nov 27` merged [Add the booth: projects as records on a turntable](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/1) in **HarshitGadge.github.io**
 - `Nov 27` merged [Publish BEIR results from a benchmark workflow, with a generated README table](https://github.com/HarshitGadge/ragbench/pull/3) in **ragbench**
 - `Nov 27` merged [Add built-in BM25 and dense retrievers](https://github.com/HarshitGadge/ragbench/pull/2) in **ragbench**
 - `Nov 27` merged [Add the core package: BEIR loader, metrics, bootstrap CIs, plug-in retrievers, CLI](https://github.com/HarshitGadge/ragbench/pull/1) in **ragbench**
 - `Nov 27` merged [Opt-in CORS so the portfolio chat page can call /query](https://github.com/HarshitGadge/agentic-rag-service/pull/4) in **agentic-rag-service**
-- `Nov 27` released [v1.0.0 — fraud screening under a review budget](https://github.com/HarshitGadge/fraud-screening/releases/tag/v1.0.0) of **fraud-screening**
-- `Nov 27` released [v1.0.0 — claims pipeline, high-cost model, live dashboard](https://github.com/HarshitGadge/medicare-claims-analytics/releases/tag/v1.0.0) of **medicare-claims-analytics**
 <!--ACTIVITY:END-->
 
 <sub>A GitHub Action refreshes this list every morning from my public activity.</sub>
@@ -230,8 +230,8 @@ Evaluations first, then the newest CI run of each project. A GitHub Action rebui
 | Project | Run | Result | When |
 |---|---|---|---|
 | **agentic-rag-service** | BEIR SciFact retrieval eval | nDCG@10 **0.713**, p95 27.9 ms over 300 queries | [`Sep 28, 2026`](https://github.com/HarshitGadge/agentic-rag-service/blob/d9ce04a2c843cb3648f6f19f6e84bc800de06d28/eval/results/scifact.json) |
+| **HarshitGadge.github.io** | CI: pages build and deployment on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/HarshitGadge.github.io/actions/runs/45936571480) |
 | **ragbench** | CI: CI on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/ragbench/actions/runs/45933706956) |
-| **HarshitGadge.github.io** | CI: pages build and deployment on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/HarshitGadge.github.io/actions/runs/45929672844) |
 | **agentic-rag-service** | CI: tests on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/agentic-rag-service/actions/runs/45927621820) |
 | **medicare-claims-analytics** | CI: ci on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/medicare-claims-analytics/actions/runs/45925887322) |
 | **capability-runtime** | CI: tests on `main` | passed | [`Sep 27, 2026`](https://github.com/HarshitGadge/capability-runtime/actions/runs/36347628246) |
