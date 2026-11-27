@@ -38,7 +38,7 @@ Each of my projects comes with a number and a test that backs it up.
 | Demo | What you'll see |
 |---|---|
 | **[Ask my portfolio →](https://harshitgadge.github.io)** | A chat page on the RAG service from the animation above, which has indexed the design docs of five of the projects below (all but fraud screening). Each glowing dot is one indexed passage; ask a question and watch the passages it uses light up, with every answer line cited to its source. It's read-only, and on a free instance the first question after a quiet spell takes about a minute. ([raw API](https://agentic-rag-service-fxsc.onrender.com/docs)) |
-| **[Medicare claims dashboard →](https://hgadge-medicare-claims.streamlit.app)** | PMPM, cost concentration, readmissions and state comparisons over 108k synthetic Medicare members, built from the dbt marts. |
+| **[Medicare claims dashboard →](https://hgadge-medicare-claims.streamlit.app)** | PMPM, cost concentration, readmissions and state comparisons over 116,352 synthetic Medicare beneficiaries from the CMS DE-SynPUF sample, built from the dbt marts. |
 
 <p align="center">
   <a href="https://harshitgadge.github.io"><img alt="Recording of the portfolio chat answering &quot;Why is MMR off by default?&quot; with cited sources" src="assets/demo-ask-portfolio.gif" width="720"></a>
