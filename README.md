@@ -33,7 +33,7 @@ Each of my projects comes with a number and a test that backs it up.
   <a href="https://github.com/HarshitGadge/payments-data-platform"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-payments-data-platform-dark.svg?v=2"><img alt="payments-data-platform: 102 tests" src="assets/card-payments-data-platform-light.svg?v=2" width="49%"></picture></a>
   <a href="https://github.com/HarshitGadge/medicare-claims-analytics"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-medicare-claims-analytics-dark.svg?v=2"><img alt="medicare-claims-analytics: +6.7 points of next year's high-cost members found" src="assets/card-medicare-claims-analytics-light.svg?v=2" width="49%"></picture></a>
   <a href="https://github.com/HarshitGadge/kafka-databricks-nasa"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-kafka-databricks-nasa-dark.svg?v=2"><img alt="kafka-databricks-nasa: 33 tests" src="assets/card-kafka-databricks-nasa-light.svg?v=2" width="49%"></picture></a>
-  <a href="https://github.com/HarshitGadge/Detecting_Fradulent_job"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-detecting_fradulent_job-dark.svg?v=2"><img alt="fraud screening: 77% of fraud caught reviewing the top 5%" src="assets/card-detecting_fradulent_job-light.svg?v=2" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/fraud-screening"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-detecting_fradulent_job-dark.svg?v=2"><img alt="fraud screening: 77% of fraud caught reviewing the top 5%" src="assets/card-detecting_fradulent_job-light.svg?v=2" width="49%"></picture></a>
 </p>
 
 ## How they work
