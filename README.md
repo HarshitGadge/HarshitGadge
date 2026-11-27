@@ -36,6 +36,12 @@ Each of my projects comes with a number and a test that backs it up.
   <a href="https://github.com/HarshitGadge/fraud-screening"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-detecting_fradulent_job-dark.svg?v=2"><img alt="fraud screening: 77% of fraud caught reviewing the top 5%" src="assets/card-detecting_fradulent_job-light.svg?v=2" width="49%"></picture></a>
 </p>
 
+**Team project:** [Tatva Silicon Agri](https://github.com/hrathore1995/Agri-crop-pest-prediction-and-detection) (crop disease and pest prediction for Indian agriculture, built with one teammate). It has four tracks in one Streamlit app:
+- **Leaf disease classifier:** MobileNetV3-small at **96.0% test accuracy** and **0.939 macro-F1** across 30 disease classes on 5 crops, after checking the split for leakage.
+- **Pest-severity forecasting:** covers 38 series from the ICAR-CRIDA archive, with a Kalman-filter trend and uncertainty band.
+- **Tomato sensor health check.**
+- **Greenhouse harvest benchmark:** validated leave-one-compartment-out.
+
 ## How they work
 
 Click any project to expand it. The diagrams are live Mermaid, so you can zoom and pan them.
