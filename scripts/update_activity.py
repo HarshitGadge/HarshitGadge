@@ -7,7 +7,12 @@ between the ACTIVITY markers.
 
 The events API trims pull-request payloads to {url, id, number, head, base} and
 reports a merge as action "merged", so titles and links are fetched from the
-pull request itself.
+pull request itself. Titles that are team ticket slugs ("HelpersTask1462_...")
+are swapped for the title of the issue they name.
+
+It also rewrites the RELEASES block with the newest release of each of the
+user's own repos; the block stays empty, so the section doesn't show, until
+the first release exists.
 
     GITHUB_TOKEN=... python scripts/update_activity.py
 """
@@ -25,6 +30,11 @@ README = Path(__file__).resolve().parent.parent / "README.md"
 START, END = "<!--ACTIVITY:START-->", "<!--ACTIVITY:END-->"
 LIMIT = 6
 SKIP_REPOS = {f"{USER}/{USER}"}
+REL_START, REL_END = "<!--RELEASES:START-->", "<!--RELEASES:END-->"
+RELEASE_LIMIT = 4
+# Team branches are named like "HelpersTask1462_Process_Fix_the_examples_in_text_rules_md":
+# a prefix, "Task", the issue number, then the issue title with its punctuation lost.
+SLUG = re.compile(r"^[A-Za-z]+Task(\d+)_(.+)$")
 
 
 def get(url: str) -> dict | list:
@@ -53,7 +63,25 @@ def pull_request(event: dict, fetch=get) -> tuple[str, str]:
             title, html = full.get("title"), full.get("html_url")
         except Exception:  # keep the line, just without a title
             pass
-    return title or f"#{number}", html or f"https://github.com/{repo}/pull/{number}"
+    return readable(title, repo, fetch) or f"#{number}", html or f"https://github.com/{repo}/pull/{number}"
+
+
+def readable(title: str | None, repo: str, fetch=get) -> str | None:
+    """Swap a ticket-slug title for the title of the issue it names.
+
+    Falls back to the slug with underscores turned into spaces if the issue
+    can't be read. Ordinary titles pass through untouched.
+    """
+    m = SLUG.match(title or "")
+    if not m:
+        return title
+    try:
+        issue = fetch(f"https://api.github.com/repos/{repo}/issues/{m.group(1)}")
+        if issue.get("title"):
+            return issue["title"]
+    except Exception:
+        pass
+    return m.group(2).replace("_", " ")
 
 
 def describe(event: dict, fetch=get) -> tuple[str, str | None] | None:
@@ -100,10 +128,41 @@ def render(events: list[dict], fetch=get) -> str:
     return "\n".join(lines) if lines else "- _Nothing public this week._"
 
 
+def latest_releases(fetch=get) -> list[dict]:
+    """The newest published release of each of the user's own public repos."""
+    found = []
+    for repo in fetch(f"https://api.github.com/users/{USER}/repos?per_page=100&type=owner"):
+        if repo.get("fork") or repo.get("archived") or repo["full_name"] in SKIP_REPOS:
+            continue
+        try:
+            rel = fetch(f"https://api.github.com/repos/{repo['full_name']}/releases/latest")
+        except Exception:  # 404 when a repo has no release yet
+            continue
+        if rel.get("published_at") and not rel.get("draft"):
+            found.append({**rel, "repo": repo["name"]})
+    return sorted(found, key=lambda r: r["published_at"], reverse=True)
+
+
+def render_releases(releases: list[dict]) -> str:
+    """A "Releases" section, or nothing at all until the first release exists."""
+    if not releases:
+        return ""
+    lines = ["## Releases", ""]
+    for r in releases[:RELEASE_LIMIT]:
+        day = datetime.fromisoformat(r["published_at"].replace("Z", "+00:00")).strftime("%b %d, %Y")
+        lines.append(f"- [**{r['repo']}** {r['tag_name']}]({r['html_url']}) · `{day}`")
+    return "\n".join(lines)
+
+
+def replace_block(text: str, start: str, end: str, body: str) -> str:
+    block = f"{start}\n{body}\n{end}" if body else f"{start}\n{end}"
+    return re.sub(re.escape(start) + r".*?" + re.escape(end), lambda _: block, text, flags=re.S)
+
+
 def main() -> None:
     readme = README.read_text(encoding="utf-8")
-    block = f"{START}\n{render(fetch_events())}\n{END}"
-    updated = re.sub(re.escape(START) + r".*?" + re.escape(END), block, readme, flags=re.S)
+    updated = replace_block(readme, START, END, render(fetch_events()))
+    updated = replace_block(updated, REL_START, REL_END, render_releases(latest_releases()))
     if updated != readme:
         README.write_text(updated, encoding="utf-8")
         print("README updated")
