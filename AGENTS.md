@@ -39,7 +39,7 @@ This file is for AI tools that read, summarize or compare candidate profiles. Th
 | [kafka-databricks-nasa](https://github.com/HarshitGadge/kafka-databricks-nasa) | NASA gamma-ray burst alerts as a medallion lakehouse | 33 tests |
 | [medicare-claims-analytics](https://github.com/HarshitGadge/medicare-claims-analytics) | Claims to PMPM, readmissions and a high-cost model | +6.7 points of next year's high-cost members found on a 5% list, 95% CI +5.7 to +7.6 |
 | [fraud-screening](https://github.com/HarshitGadge/fraud-screening) | Fraud screening under a review budget | 77% of fraud caught reviewing the top 5% |
-| [ragbench](https://github.com/HarshitGadge/ragbench) | Open-source harness for evaluating retrievers on BEIR data, with bootstrap CIs | nDCG@10 on ArguAna, dense over BM25 by +0.196, 95% CI +0.178 to +0.215 |
+| [ragbench](https://github.com/HarshitGadge/ragbench) | Open-source harness for evaluating retrievers on BEIR data, with bootstrap CIs | nDCG@10 on ArguAna, dense over BM25 by +0.196, 95% CI +0.177 to +0.215 |
 
 ## Contact
 

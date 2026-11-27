@@ -20,7 +20,7 @@ Every project below has a headline number and a test or benchmark in its repo th
 - [kafka-databricks-nasa](https://github.com/HarshitGadge/kafka-databricks-nasa): NASA GCN gamma-ray burst alerts from Kafka into a Databricks medallion lakehouse. 33 tests.
 - [medicare-claims-analytics](https://github.com/HarshitGadge/medicare-claims-analytics): dbt pipeline over CMS DE-SynPUF claims with a LightGBM next-year high-cost model. On a 5% list it finds 20.8% of next year's high-cost members against 14.1% for ranking by current spend (+6.7 points, 95% CI +5.7 to +7.6).
 - [fraud-screening](https://github.com/HarshitGadge/fraud-screening): catches 77% of fraud while reviewing the top 5%.
-- [ragbench](https://github.com/HarshitGadge/ragbench): an open-source harness that scores any retriever on BEIR-format data, with bootstrap confidence intervals and a paired compare, checked against trec_eval. On ArguAna, dense retrieval beats BM25 on nDCG@10 by +0.196 (95% CI +0.178 to +0.215).
+- [ragbench](https://github.com/HarshitGadge/ragbench): an open-source harness that scores any retriever on BEIR-format data, with bootstrap confidence intervals and a paired compare, checked against trec_eval. On ArguAna, dense retrieval beats BM25 on nDCG@10 by +0.196 (95% CI +0.177 to +0.215).
 
 ## Try it
 
