@@ -1,0 +1,157 @@
+<a href="https://github.com/HarshitGadge/agentic-rag-service">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg">
+    <img alt="Harshit Gadge — an animated terminal asks my portfolio Q&A service a question and it answers with a citation" src="assets/hero-dark.svg" width="100%">
+  </picture>
+</a>
+
+<p align="center">
+  <a href="https://www.linkedin.com/in/harshitg-">LinkedIn</a> ·
+  <a href="mailto:harshit.gadge.1805@gmail.com">harshit.gadge.1805@gmail.com</a> ·
+  <a href="#featured-work">Featured work</a> ·
+  <a href="#how-they-work">How they work</a>
+</p>
+
+I'm an AI and data engineer. I've just finished an MS in Data Science at the University of Maryland (GPA 3.95). I'm an **AI Engineer Intern at Causify.AI** and work on **Prof. GP Saggese's research team at UMD**. I'm also co-inventor on an **Indian patent** for electromagnetic simulation and machine learning for non-invasive lung tumor prediction.
+
+Each of my projects comes with a number and a test that backs it up.
+
+## Featured work
+
+<p align="center">
+  <a href="https://github.com/HarshitGadge/agentic-rag-service"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-agentic-rag-service-dark.svg"><img alt="agentic-rag-service: +5.0 nDCG@10 on SciFact" src="assets/card-agentic-rag-service-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/capability-runtime"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-capability-runtime-dark.svg"><img alt="capability-runtime: 0 model calls per production replay" src="assets/card-capability-runtime-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/payments-data-platform"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-payments-data-platform-dark.svg"><img alt="payments-data-platform: 102 tests" src="assets/card-payments-data-platform-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/medicare-claims-analytics"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-medicare-claims-analytics-dark.svg"><img alt="medicare-claims-analytics: +6.7 points of next year's high-cost members found" src="assets/card-medicare-claims-analytics-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/kafka-databricks-nasa"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-kafka-databricks-nasa-dark.svg"><img alt="kafka-databricks-nasa: 33 tests" src="assets/card-kafka-databricks-nasa-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/Detecting_Fradulent_job"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-detecting_fradulent_job-dark.svg"><img alt="fraud screening: 77% of fraud caught reviewing the top 5%" src="assets/card-detecting_fradulent_job-light.svg" width="49%"></picture></a>
+</p>
+
+## How they work
+
+Click any project to expand it. The diagrams are live Mermaid, so you can zoom and pan them.
+
+<details>
+<summary><b>agentic-rag-service</b>: a retrieval agent that plans, retries, and cites its sources</summary>
+<br>
+
+```mermaid
+flowchart LR
+    Q["POST /query"] --> P["plan<br/>decompose multi-part questions"]
+    P --> R["retrieve<br/>one search per sub-query<br/>vector (+ BM25 if hybrid)"]
+    DB[("ChromaDB<br/>tuned HNSW")] -.-> R
+    R --> F["fuse<br/>reciprocal rank fusion"]
+    F --> A{"assess<br/>coverage"}
+    A -- "weak · max 2 rounds" --> R
+    A -- "ok" --> G["generate<br/>Claude, grounded + cited<br/>or extractive fallback"]
+    G --> OUT["answer · citations · per-stage timings"]
+```
+
+- **I changed the defaults because the evaluation told me to.** On BEIR SciFact, turning MMR off raised nDCG@10 from 0.663 to 0.713. The 95% bootstrap CI for the gain is +3.1 to +6.9 points.
+- **Running embeddings on ONNX Runtime** cut p95 embedding latency from 13.2 ms to 5.1 ms, measured with a benchmark that's in the repo.
+- **With no API key it still works.** It falls back to an extractive answer that keeps its citations.
+
+</details>
+
+<details>
+<summary><b>capability-runtime</b>: an LLM discovers a workflow once, then it replays with no model</summary>
+<br>
+
+```mermaid
+flowchart LR
+    subgraph once["Discovery: once, with a model"]
+        LLM["LLM agent<br/>observe, decide, act"] --> REC["recording"]
+    end
+    REC --> COMP["compiler<br/>ranked locators, checkpoints, redaction"]
+    COMP --> ART["capability artifact<br/>typed, versioned, reviewable"]
+    subgraph many["Production: many times, no model"]
+        AGENT["AI agent"] -- "invoke(inputs)" --> REPLAY["replay engine<br/>observe, verify, act"]
+        REPLAY -- "Success · BusinessOutcome · Failure · Escalated" --> AGENT
+    end
+    ART --> REPLAY
+    REPLAY -. "stuck or irreversible" .-> HUMAN["human operator<br/>same live session"]
+    REPLAY -.-> GATE["policy gate<br/>allowlist, risk ceiling, redaction"]
+```
+
+- **Discovery costs about $0.32 and happens once.** The balance-lookup flow took 14 model turns. Every replay after that is deterministic code.
+- **It separates legitimate business answers from real failures.** "Member not found" is an outcome. A broken locator is a failure, and it comes with a drift report.
+- **Irreversible steps go to a human,** such as posting a funds transfer. 84 tests boot the app themselves, with no API key and no network.
+
+</details>
+
+<details>
+<summary><b>payments-data-platform</b>: CDC into a lakehouse that can't move a payment backwards</summary>
+<br>
+
+```mermaid
+flowchart LR
+    PG[("Postgres<br/>payments")] -- "Debezium CDC" --> K["Kafka"]
+    K --> B["Bronze<br/>raw message + offset"]
+    B --> S["Silver<br/>one row per payment<br/>MERGE guarded on cdc_lsn"]
+    B -. "undecodable" .-> QZ["quarantine"]
+    S --> GD["Gold<br/>recomputed, not appended"]
+    GD --> T["Trino"] --> API["FastAPI"]
+    FX["FX REST API"] --> S3[("S3")] --> SF["Snowflake + dbt<br/>convert at payment-date rate"]
+```
+
+- **A stale event can't overwrite a newer one.** The MERGE guards on `cdc_lsn > target.cdc_lsn`. It uses the LSN, not the timestamp, because two changes can land in the same millisecond.
+- **Gold is recomputed rather than appended,** because a refund today changes last week's revenue.
+- **102 tests,** including one named after each way CDC corrupts payment data.
+
+</details>
+
+<details>
+<summary><b>kafka-databricks-nasa</b>: NASA's real-time gamma-ray burst alerts as a lakehouse</summary>
+<br>
+
+```mermaid
+flowchart LR
+    NASA["NASA GCN<br/>Fermi GBM notices"] --> KAFKA["GCN Kafka<br/>SASL_SSL + OAUTHBEARER"]
+    KAFKA --> RAW["Bronze<br/>payload + Kafka metadata"]
+    RAW -- "parse" --> CLEAN["Silver: cleaned"]
+    RAW -- "unparseable" --> QUAR["Silver: quarantine"]
+    CLEAN --> FACT["Gold: fact_gcn_notices"]
+    CLEAN --> DIMS["Gold: timing, sky position,<br/>sun / moon dimensions"]
+    FACT --> BI["Databricks SQL"]
+```
+
+- **The parser is pure, unit-tested Python,** because the alert format breaks `split(':')`. It has colons inside values, URLs, wrapped lines and repeated keys.
+- **Dimension keys are deterministic,** so a rebuild reproduces identical keys. 33 tests cover the parser, the Spark transforms and the data model.
+
+</details>
+
+<details>
+<summary><b>medicare-claims-analytics</b>: claims to PMPM, readmissions and a high-cost model</summary>
+<br>
+
+```mermaid
+flowchart LR
+    CSV["CMS DE-SynPUF CSVs"] --> STG["staging<br/>typed, decoded"]
+    STG --> INT["intermediate<br/>overlapping claims merged into stays"]
+    INT --> MART["marts<br/>member-years, stays, readmit flags"]
+    MART --> AGG["PMPM, cost concentration,<br/>readmissions by state"]
+    MART --> ML["LightGBM<br/>next-year high-cost"]
+    AGG --> APP["Streamlit + Power BI"]
+    ML --> APP
+```
+
+- **The model's list catches more high-cost members.** On a 5% list it finds 20.8% of next year's high-cost members, against 14.1% for ranking by current spend. That's +6.7 points, with a 95% CI of +5.7 to +7.6.
+- **Hospital stays are built properly.** Overlapping claims, same-day admissions and next-day transfers are merged before readmissions are counted.
+
+</details>
+
+## Latest work
+
+<!--ACTIVITY:START-->
+- `Nov 26` merged [Deployable read-only demo: portfolio Q&A on Render](https://github.com/HarshitGadge/agentic-rag-service/pull/3) in **agentic-rag-service**
+- `Nov 26` merged [Prepare the dashboard for Streamlit Community Cloud](https://github.com/HarshitGadge/medicare-claims-analytics/pull/1) in **medicare-claims-analytics**
+<!--ACTIVITY:END-->
+
+<sub>A GitHub Action refreshes this list every morning from my public activity.</sub>
+
+## Toolbox
+
+`Python` `SQL` `PySpark` `LangChain` `LangGraph` `FastAPI` `dbt` `Kafka` `Databricks` `Snowflake` `AWS` `Docker` `GitHub Actions`
+
+<sub>The artwork on this page is plain SVG with CSS animation, generated by <a href="scripts/build_assets.py"><code>scripts/build_assets.py</code></a>. No third-party widgets.</sub>

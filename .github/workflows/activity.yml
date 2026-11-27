@@ -1,0 +1,32 @@
+name: Refresh latest work
+
+on:
+  schedule:
+    - cron: "17 11 * * *"   # daily, 06:17 US Eastern
+  workflow_dispatch:
+  push:
+    paths:
+      - scripts/update_activity.py
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Rewrite the Latest work block
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/update_activity.py
+      - name: Commit if changed
+        run: |
+          if git diff --quiet README.md; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Refresh latest work"
+          git push
