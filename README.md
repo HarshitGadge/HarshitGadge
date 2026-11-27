@@ -152,7 +152,10 @@ flowchart LR
 ## Latest work
 
 <!--ACTIVITY:START-->
-- _Nothing public this week._
+- `Nov 27` merged [Prepare the dashboard for Streamlit Community Cloud](https://github.com/HarshitGadge/medicare-claims-analytics/pull/1) in **medicare-claims-analytics**
+- `Nov 27` merged [Deployable read-only demo: portfolio Q&A on Render](https://github.com/HarshitGadge/agentic-rag-service/pull/3) in **agentic-rag-service**
+- `Nov 25` merged [HelpersTask1462_Process_Fix_the_examples_in_text_rules_md](https://github.com/gpsaggese/helpers/pull/1463) in **gpsaggese/helpers**
+- `Nov 20` opened [UmdTask803_Review_and_automate_GH_project_1](https://github.com/gpsaggese/gpsaggese.github.io/pull/975) in **gpsaggese/gpsaggese.github.io**
 <!--ACTIVITY:END-->
 
 <sub>A GitHub Action refreshes this list every morning from my public activity.</sub>
