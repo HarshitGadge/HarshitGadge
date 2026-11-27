@@ -7,6 +7,7 @@ on:
   push:
     paths:
       - scripts/update_activity.py
+      - scripts/update_ledger.py
       - tests/**
 
 permissions:
@@ -22,10 +23,10 @@ jobs:
           python-version: "3.12"
       - name: Test the rewrite script
         run: pip install --quiet pytest && python -m pytest -q tests
-      - name: Rewrite the Latest work and Releases blocks
+      - name: Rewrite the Latest work, Releases and Latest runs blocks
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python scripts/update_activity.py
+        run: python scripts/update_activity.py && python scripts/update_ledger.py
       - name: Commit if changed
         run: |
           if git diff --quiet README.md; then exit 0; fi
