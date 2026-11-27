@@ -23,7 +23,7 @@ Every project below has a headline number and a test or benchmark in its repo th
 
 ## Try it
 
-- [Ask my portfolio](https://harshitgadge.github.io): a live chat over the design docs of five of the projects above, with every answer line cited.
+- [The booth](https://harshitgadge.github.io): each project is a record on a turntable; put one on and ask it a question, answered from that project's docs with every sentence cited.
 - [Medicare claims dashboard](https://hgadge-medicare-claims.streamlit.app)
 
 ## Contact

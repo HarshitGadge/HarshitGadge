@@ -45,26 +45,26 @@ Each of my projects comes with a number and a test that backs it up.
 
 | Demo | What you'll see |
 |---|---|
-| **[Ask my portfolio →](https://harshitgadge.github.io)** | A chat page on the RAG service from the animation above, which has indexed the design docs of five of the projects below (all but fraud screening). Each glowing dot is one indexed passage; ask a question and watch the passages it uses light up, with every answer line cited to its source. It's read-only, and on a free instance the first question after a quiet spell takes about a minute. ([raw API](https://agentic-rag-service-fxsc.onrender.com/docs)) |
+| **[The booth →](https://harshitgadge.github.io)** | My projects as records on a turntable. Put one on and its song starts; then ask it a question, and the RAG service from the animation above searches only that project's docs and answers with every sentence cited to its source, showing how long each step took. Five of the six records take questions (fraud screening's docs aren't indexed yet). It's read-only, and on a free instance the first question after a quiet spell takes about a minute. ([raw API](https://agentic-rag-service-fxsc.onrender.com/docs)) |
 | **[Medicare claims dashboard →](https://hgadge-medicare-claims.streamlit.app)** | PMPM, cost concentration, readmissions and state comparisons over 116,352 synthetic Medicare beneficiaries from the CMS DE-SynPUF sample, built from the dbt marts. |
 
 <p align="center">
-  <a href="https://harshitgadge.github.io"><img alt="Recording of the portfolio chat answering &quot;Why is MMR off by default?&quot; with cited sources" src="assets/demo-ask-portfolio.gif" width="720"></a>
+  <a href="https://harshitgadge.github.io"><img alt="Recording of the booth: the payments-data-platform record goes on, its song starts, and the ask box answers &quot;How does the pipeline ignore a stale, replayed CDC event?&quot; with cited sentences" src="assets/demo-booth.gif" width="720"></a>
 </p>
 
-<sub>A real recording of the portfolio chat on Nov 27, 2026. It pulled 5 passages and answered in 151 ms round-trip, with each sentence cited to its source.</sub>
+<sub>A real recording of the booth on Nov 27, 2026. It pulled 5 passages and answered in 358 ms round-trip, with each sentence cited to its source.</sub>
 
 ## Featured work
 
-Each project is a record. Pick a sleeve to play it on [the booth](https://harshitgadge.github.io/booth/), where the liner notes say what it does, the number that backs it up, and the stack.
+Each project is a record. Pick a sleeve to play it on [the booth](https://harshitgadge.github.io/), where the liner notes say what it does, the number that backs it up, and the stack.
 
 <p align="center">
-  <a href="https://harshitgadge.github.io/booth/#agentic-rag-service"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-agentic-rag-service-dark.svg"><img alt="agentic-rag-service: +5.0 nDCG@10 on SciFact" src="assets/sleeve-agentic-rag-service-light.svg" width="49%"></picture></a>
-  <a href="https://harshitgadge.github.io/booth/#capability-runtime"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-capability-runtime-dark.svg"><img alt="capability-runtime: 0 model calls per production replay" src="assets/sleeve-capability-runtime-light.svg" width="49%"></picture></a>
-  <a href="https://harshitgadge.github.io/booth/#payments-data-platform"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-payments-data-platform-dark.svg"><img alt="payments-data-platform: 102 tests" src="assets/sleeve-payments-data-platform-light.svg" width="49%"></picture></a>
-  <a href="https://harshitgadge.github.io/booth/#medicare-claims-analytics"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-medicare-claims-analytics-dark.svg"><img alt="medicare-claims-analytics: +6.7 points of next year's high-cost members found" src="assets/sleeve-medicare-claims-analytics-light.svg" width="49%"></picture></a>
-  <a href="https://harshitgadge.github.io/booth/#kafka-databricks-nasa"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-kafka-databricks-nasa-dark.svg"><img alt="kafka-databricks-nasa: 33 tests" src="assets/sleeve-kafka-databricks-nasa-light.svg" width="49%"></picture></a>
-  <a href="https://harshitgadge.github.io/booth/#fraud-screening"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-fraud-screening-dark.svg"><img alt="fraud screening: 77% of fraud caught reviewing the top 5%" src="assets/sleeve-fraud-screening-light.svg" width="49%"></picture></a>
+  <a href="https://harshitgadge.github.io/#agentic-rag-service"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-agentic-rag-service-dark.svg"><img alt="agentic-rag-service: +5.0 nDCG@10 on SciFact" src="assets/sleeve-agentic-rag-service-light.svg" width="49%"></picture></a>
+  <a href="https://harshitgadge.github.io/#capability-runtime"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-capability-runtime-dark.svg"><img alt="capability-runtime: 0 model calls per production replay" src="assets/sleeve-capability-runtime-light.svg" width="49%"></picture></a>
+  <a href="https://harshitgadge.github.io/#payments-data-platform"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-payments-data-platform-dark.svg"><img alt="payments-data-platform: 102 tests" src="assets/sleeve-payments-data-platform-light.svg" width="49%"></picture></a>
+  <a href="https://harshitgadge.github.io/#medicare-claims-analytics"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-medicare-claims-analytics-dark.svg"><img alt="medicare-claims-analytics: +6.7 points of next year's high-cost members found" src="assets/sleeve-medicare-claims-analytics-light.svg" width="49%"></picture></a>
+  <a href="https://harshitgadge.github.io/#kafka-databricks-nasa"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-kafka-databricks-nasa-dark.svg"><img alt="kafka-databricks-nasa: 33 tests" src="assets/sleeve-kafka-databricks-nasa-light.svg" width="49%"></picture></a>
+  <a href="https://harshitgadge.github.io/#fraud-screening"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-fraud-screening-dark.svg"><img alt="fraud screening: 77% of fraud caught reviewing the top 5%" src="assets/sleeve-fraud-screening-light.svg" width="49%"></picture></a>
 </p>
 
 <p align="center"><sub>Straight to the code: <a href="https://github.com/HarshitGadge/agentic-rag-service">agentic-rag-service</a> · <a href="https://github.com/HarshitGadge/capability-runtime">capability-runtime</a> · <a href="https://github.com/HarshitGadge/payments-data-platform">payments-data-platform</a> · <a href="https://github.com/HarshitGadge/medicare-claims-analytics">medicare-claims-analytics</a> · <a href="https://github.com/HarshitGadge/kafka-databricks-nasa">kafka-databricks-nasa</a> · <a href="https://github.com/HarshitGadge/fraud-screening">fraud-screening</a></sub></p>
