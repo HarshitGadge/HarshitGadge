@@ -210,16 +210,16 @@ Short write-ups on decisions in these projects, each backed by a run in its repo
 ## Latest work
 
 <!--STATS:START-->
-In the last 30 days I merged **31** pull requests across **6** repositories and published **6** releases. <sub>Counted from the GitHub API on Nov 27, 2026.</sub>
+In the last 30 days I merged **38** pull requests across **6** repositories and published **8** releases. <sub>Counted from the GitHub API on Nov 27, 2026.</sub>
 <!--STATS:END-->
 
 <!--ACTIVITY:START-->
-- `Nov 27` merged [Booth: remove Side B](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/5) in **HarshitGadge.github.io**
-- `Nov 27` merged [Prepare the 1.0.0 release](https://github.com/HarshitGadge/ragbench/pull/5) in **ragbench**
-- `Nov 27` merged [Add BEIR benchmark results (SciFact, NFCorpus, ArguAna)](https://github.com/HarshitGadge/ragbench/pull/4) in **ragbench**
-- `Nov 27` merged [Booth: records play their paired song when they go on the deck](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/4) in **HarshitGadge.github.io**
-- `Nov 27` merged [Booth: add Side B with six songs as Spotify players](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/3) in **HarshitGadge.github.io**
-- `Nov 27` merged [Booth fixes: tonearm, label text, phone width](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/2) in **HarshitGadge.github.io**
+- `Nov 27` released [RAGBench 1.1.0](https://github.com/HarshitGadge/ragbench/releases/tag/v1.1.0) of **ragbench**
+- `Nov 27` merged [Booth: clear old timings on a record switch, and skip table scraps in answers](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/8) in **HarshitGadge.github.io**
+- `Nov 27` merged [Add a CI gate: ragbench gate and a GitHub Action](https://github.com/HarshitGadge/ragbench/pull/7) in **ragbench**
+- `Nov 27` merged [Make the booth the home page](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/7) in **HarshitGadge.github.io**
+- `Nov 27` merged [Booth: ask each record a question about its project](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/6) in **HarshitGadge.github.io**
+- `Nov 27` merged [Publish releases to PyPI with trusted publishing](https://github.com/HarshitGadge/ragbench/pull/6) in **ragbench**
 <!--ACTIVITY:END-->
 
 <sub>A GitHub Action refreshes this list every morning from my public activity.</sub>
@@ -227,10 +227,10 @@ In the last 30 days I merged **31** pull requests across **6** repositories and 
 <!--RELEASES:START-->
 ## Releases
 
+- [**ragbench** v1.1.0](https://github.com/HarshitGadge/ragbench/releases/tag/v1.1.0) · `Nov 27, 2026`
 - [**fraud-screening** v1.0.0](https://github.com/HarshitGadge/fraud-screening/releases/tag/v1.0.0) · `Nov 27, 2026`
 - [**medicare-claims-analytics** v1.0.0](https://github.com/HarshitGadge/medicare-claims-analytics/releases/tag/v1.0.0) · `Nov 27, 2026`
 - [**kafka-databricks-nasa** v1.0.0](https://github.com/HarshitGadge/kafka-databricks-nasa/releases/tag/v1.0.0) · `Nov 27, 2026`
-- [**payments-data-platform** v1.0.0](https://github.com/HarshitGadge/payments-data-platform/releases/tag/v1.0.0) · `Nov 27, 2026`
 <!--RELEASES:END-->
 
 <!--LEDGER:START-->
@@ -241,9 +241,9 @@ Evaluations first, then the newest CI run of each project. A GitHub Action rebui
 | Project | Run | Result | When |
 |---|---|---|---|
 | **agentic-rag-service** | BEIR SciFact retrieval eval | nDCG@10 **0.713**, p95 27.9 ms over 300 queries | [`Sep 28, 2026`](https://github.com/HarshitGadge/agentic-rag-service/blob/d9ce04a2c843cb3648f6f19f6e84bc800de06d28/eval/results/scifact.json) |
-| **ragbench** | CI: CI on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/ragbench/actions/runs/45939147507) |
-| **HarshitGadge.github.io** | CI: pages build and deployment on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/HarshitGadge.github.io/actions/runs/45939167224) |
-| **agentic-rag-service** | CI: tests on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/agentic-rag-service/actions/runs/45927621820) |
+| **HarshitGadge.github.io** | CI: pages build and deployment on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/HarshitGadge.github.io/actions/runs/45940975951) |
+| **ragbench** | CI: CI on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/ragbench/actions/runs/45940850902) |
+| **agentic-rag-service** | CI: tests on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/agentic-rag-service/actions/runs/45939961246) |
 | **medicare-claims-analytics** | CI: ci on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/medicare-claims-analytics/actions/runs/45925887322) |
 | **capability-runtime** | CI: tests on `main` | passed | [`Sep 27, 2026`](https://github.com/HarshitGadge/capability-runtime/actions/runs/36347628246) |
 | **payments-data-platform** | CI: tests on `main` | passed | [`Sep 27, 2026`](https://github.com/HarshitGadge/payments-data-platform/actions/runs/36347526215) |
