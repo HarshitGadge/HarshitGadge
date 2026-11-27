@@ -210,16 +210,16 @@ Short write-ups on decisions in these projects, each backed by a run in its repo
 ## Latest work
 
 <!--STATS:START-->
-In the last 30 days I merged **24** pull requests across **6** repositories and published **6** releases. <sub>Counted from the GitHub API on Nov 27, 2026.</sub>
+In the last 30 days I merged **26** pull requests across **6** repositories and published **6** releases. <sub>Counted from the GitHub API on Nov 27, 2026.</sub>
 <!--STATS:END-->
 
 <!--ACTIVITY:START-->
+- `Nov 27` merged [Booth: add Side B with six songs as Spotify players](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/3) in **HarshitGadge.github.io**
 - `Nov 27` merged [Booth fixes: tonearm, label text, phone width](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/2) in **HarshitGadge.github.io**
 - `Nov 27` merged [Add the booth: projects as records on a turntable](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/1) in **HarshitGadge.github.io**
 - `Nov 27` merged [Publish BEIR results from a benchmark workflow, with a generated README table](https://github.com/HarshitGadge/ragbench/pull/3) in **ragbench**
 - `Nov 27` merged [Add built-in BM25 and dense retrievers](https://github.com/HarshitGadge/ragbench/pull/2) in **ragbench**
 - `Nov 27` merged [Add the core package: BEIR loader, metrics, bootstrap CIs, plug-in retrievers, CLI](https://github.com/HarshitGadge/ragbench/pull/1) in **ragbench**
-- `Nov 27` merged [Opt-in CORS so the portfolio chat page can call /query](https://github.com/HarshitGadge/agentic-rag-service/pull/4) in **agentic-rag-service**
 <!--ACTIVITY:END-->
 
 <sub>A GitHub Action refreshes this list every morning from my public activity.</sub>
