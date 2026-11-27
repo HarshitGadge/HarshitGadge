@@ -1,0 +1,254 @@
+[
+  {
+    "question": "how does the payments pipeline ignore a stale, replayed CDC event?",
+    "sub_queries": [
+      "how does the payments pipeline ignore a stale, replayed CDC event?"
+    ],
+    "answer": "Answer assembled directly from the retrieved passages (set ANTHROPIC_API_KEY for synthesised answers):\n\n```sql\nMERGE INTO silver.payments AS t\nUSING cdc_batch AS s ON t.payment_id = s.payment_id\nWHEN MATCHED AND s.is_deleted THEN DELETE\nWHEN MATCHED AND s.cdc_lsn > t.cdc_lsn THEN UPDATE SET ... [1] A CDC source mutates history — a payment\nauthorised last week can be refunded today, changing last week's revenue — so an\nappend-only gold layer drifts from silver within days. [1] ## The CDC merge\n\nFour properties, one MERGE clause each. [1] See\n[`src/payments_platform/merge.py`](../src/payments_platform/merge.py). [1] A CDC batch routinely holds several changes to one\n payment, so it is collapsed by LSN first. [4] The MERGE guards on `cdc_lsn > target.cdc_lsn`, so a stale event\nre-applied after a newer one is ignored. [5]",
+    "answer_mode": "extractive",
+    "citations": [
+      {
+        "chunk_id": "c82f6970795ace23d78cdcf8b4db610f",
+        "source": "demo/corpus/payments-data-platform/DESIGN.md",
+        "score": 0.755512,
+        "snippet": "**Gold** is recomputed, not appended. A CDC source mutates history — a payment\nauthorised last week can be refunded today, changing last week's revenue — so an\nappend-only gold layer drifts from silver within days.\n\n## The CDC merge\n\nFour properties, one MERGE clause each. See\n[`src/payments_platform/merge.py`](../src/",
+        "metadata": {
+          "char_count": 599,
+          "chunk_index": 2,
+          "source_tag": "payments-data-platform",
+          "source": "demo/corpus/payments-data-platform/DESIGN.md",
+          "format": "md"
+        }
+      },
+      {
+        "chunk_id": "0cb8bb4428996892200a26d5529b33ae",
+        "source": "demo/corpus/capability-runtime/README.md",
+        "score": 0.744676,
+        "snippet": "The transfer was recorded against a $50 amount, so its recording contains no dialog. High-value\ntransfers raise one at runtime; the app-level `HIGH_VALUE_CONFIRM` recovery handles it and the flow\ncontinues to the irreversible confirm, which escalates. Every capability inherits app-level\nrecoveries without re-recording.",
+        "metadata": {
+          "source": "demo/corpus/capability-runtime/README.md",
+          "char_count": 771,
+          "format": "md",
+          "chunk_index": 15,
+          "source_tag": "capability-runtime"
+        }
+      },
+      {
+        "chunk_id": "79926f7636857fdd9948144d6e417959",
+        "source": "demo/corpus/capability-runtime/REPORT.md",
+        "score": 0.740385,
+        "snippet": "**An unexpected confirmation dialog is handled as a recovery, not a step.** The transfer\ncapability was recorded against a small amount, so its recording contains no dialog. High-value\ntransfers raise an extra acknowledgement the flow never saw at record time; replay meets it as a\nruntime interruption, matches the app-",
+        "metadata": {
+          "source_tag": "capability-runtime",
+          "char_count": 542,
+          "chunk_index": 16,
+          "source": "demo/corpus/capability-runtime/REPORT.md",
+          "format": "md"
+        }
+      },
+      {
+        "chunk_id": "772b4431f0ad15ee76d5f21bc1bd3f86",
+        "source": "demo/corpus/payments-data-platform/DESIGN.md",
+        "score": 0.735523,
+        "snippet": "1. A delete must delete.\n2. A replay must not move the table backwards — hence the LSN predicate.\n3. The source must hold one row per key. Iceberg fails a MERGE whose source\n matches a target row more than once, deliberately, since the result would be\n non-deterministic. A CDC batch routinely holds several changes to o",
+        "metadata": {
+          "char_count": 735,
+          "source_tag": "payments-data-platform",
+          "chunk_index": 3,
+          "format": "md",
+          "source": "demo/corpus/payments-data-platform/DESIGN.md"
+        }
+      },
+      {
+        "chunk_id": "a9f8db9d96627d7c7243495ab9941895",
+        "source": "demo/corpus/payments-data-platform/README.md",
+        "score": 0.734534,
+        "snippet": "**Deletes carry the row in `before`, not `after`.** A job that only upserts the\n`after` image leaves deleted payments in the warehouse forever. The source tables\nare `REPLICA IDENTITY FULL` so the `before` image has real columns — under the\nPostgres default it holds only the primary key.\n\n**Replays must not move the ta",
+        "metadata": {
+          "chunk_index": 6,
+          "char_count": 625,
+          "source_tag": "payments-data-platform",
+          "source": "demo/corpus/payments-data-platform/README.md",
+          "format": "md"
+        }
+      }
+    ],
+    "timings": {
+      "plan_ms": 0.05,
+      "embed_ms": 0.01,
+      "search_ms": 20.43,
+      "rerank_ms": 6.71,
+      "generate_ms": 0.46,
+      "total_ms": 27.69
+    },
+    "request_id": "84c00a25-6b21-4b4a-95ab-a38b4ce75a15"
+  },
+  {
+    "question": "how are hospital readmissions defined in the Medicare claims project?",
+    "sub_queries": [
+      "how are hospital readmissions defined in the Medicare claims project?"
+    ],
+    "answer": "Answer assembled directly from the retrieved passages (set ANTHROPIC_API_KEY for synthesised answers):\n\n- **Hospital stays** merge overlapping claims, same-day admissions and next-day transfers to a different provider into one stay\n (gaps-and-islands on admission and discharge dates), following the CMS readmission measures' treatment of transfer chains. [1] - **Readmissions:** an index stay is discharged alive with 30 days of follow-up left in the data, and a readmission is any stay starting\n 1–30 days later. [1] ## Differences from the official CMS measures\n\nThe readmission logic follows the structure of the CMS hospital-wide and HRRP measures (transfer chains collapsed, in-hospital deaths\nand discharges without 30 days of follow-up excluded, 30-day window) but is simpler: [2] - no planned-readmission algorithm: every readmission counts;\n- no age restriction: the CMS measures cover patients 65 and older, while here about 17.5% of 2008 index stays are for younger\n beneficiaries (entitled through disability or ESRD);\n- a stay that is itself a readmission can also be an index stay, as in the hospital-wide measure; the condition-specific measures don't allow this;\n- the condition cohort comes from the principal diagnosis of the first claim in a transfer chain, using principal-diagnosis code lists only;\n- no exclusions for discharges against medical advice or for missing enrollment in the 30 days after discharge;\n- no risk adjustment. [3] # Medicare Claims Analytics: Cost, Readmissions and Care-Management Targeting\n\n[![ci](https://github.com/HarshitGadge/medicare-claims-analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/HarshitGadge/medicare-claims-analytics/actions/workflows/ci.yml)\n\nAn end-to-end claims analytics project on CMS Medicare claims data: a **dbt + DuckDB** pipeline that turns raw beneficiary and claim\nfiles into tested fact tables and plan-level metrics (PMPM, utilization per 1,000, 30-day readmissions), an analysis of where the money\ngoes and who gets readmitted, a model that picks **next year's high-cost members** for a care-management team, and dashboards in\n**Streamlit** and **Power BI**. [4] Readmission rates rise with chronic burden far more than they vary by index diagnosis.** The 2008 all-cause 30-day readmission rate is\n**14.7%**, the same order as published real-Medicare figures from a few years earlier (19.6% for 2003–04 discharges, Jencks et al., *NEJM* 2009). [5]",
+    "answer_mode": "extractive",
+    "citations": [
+      {
+        "chunk_id": "5122b4991686a8949eb0abf4bba29083",
+        "source": "demo/corpus/medicare-claims-analytics/README.md",
+        "score": 0.779352,
+        "snippet": "- **Staging** types every column (the CSVs are read as text) and decodes codes from the CMS codebook: sex, race, SSA state, the chronic-condition flags.\n- **Hospital stays** merge overlapping claims, same-day admissions and next-day transfers to a different provider into one stay\n (gaps-and-islands on admission and dis",
+        "metadata": {
+          "char_count": 672,
+          "format": "md",
+          "source_tag": "medicare-claims-analytics",
+          "source": "demo/corpus/medicare-claims-analytics/README.md",
+          "chunk_index": 9
+        }
+      },
+      {
+        "chunk_id": "4dc905c812e6661204a72735f47c0490",
+        "source": "demo/corpus/medicare-claims-analytics/metrics.md",
+        "score": 0.75475,
+        "snippet": "## Differences from the official CMS measures\n\nThe readmission logic follows the structure of the CMS hospital-wide and HRRP measures (transfer chains collapsed, in-hospital deaths\nand discharges without 30 days of follow-up excluded, 30-day window) but is simpler:",
+        "metadata": {
+          "format": "md",
+          "source_tag": "medicare-claims-analytics",
+          "chunk_index": 5,
+          "source": "demo/corpus/medicare-claims-analytics/metrics.md",
+          "char_count": 265
+        }
+      },
+      {
+        "chunk_id": "32569ed915461bf48ccdfd8cd35885bf",
+        "source": "demo/corpus/medicare-claims-analytics/metrics.md",
+        "score": 0.740269,
+        "snippet": "- no planned-readmission algorithm: every readmission counts;\n- no age restriction: the CMS measures cover patients 65 and older, while here about 17.5% of 2008 index stays are for younger\n beneficiaries (entitled through disability or ESRD);\n- a stay that is itself a readmission can also be an index stay, as in the ho",
+        "metadata": {
+          "char_count": 665,
+          "format": "md",
+          "chunk_index": 6,
+          "source": "demo/corpus/medicare-claims-analytics/metrics.md",
+          "source_tag": "medicare-claims-analytics"
+        }
+      },
+      {
+        "chunk_id": "882d56f6937a178f2d990980355e8d85",
+        "source": "demo/corpus/medicare-claims-analytics/README.md",
+        "score": 0.740141,
+        "snippet": "# Medicare Claims Analytics: Cost, Readmissions and Care-Management Targeting\n\n[![ci](https://github.com/HarshitGadge/medicare-claims-analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/HarshitGadge/medicare-claims-analytics/actions/workflows/ci.yml)\n\nAn end-to-end claims analytics project on CMS Medicare",
+        "metadata": {
+          "source": "demo/corpus/medicare-claims-analytics/README.md",
+          "source_tag": "medicare-claims-analytics",
+          "char_count": 695,
+          "format": "md",
+          "chunk_index": 0
+        }
+      },
+      {
+        "chunk_id": "8caa5a6cac9056f16f0bc6bb82a9df7d",
+        "source": "demo/corpus/medicare-claims-analytics/README.md",
+        "score": 0.711291,
+        "snippet": "**3. Readmission rates rise with chronic burden far more than they vary by index diagnosis.** The 2008 all-cause 30-day readmission rate is\n**14.7%**, the same order as published real-Medicare figures from a few years earlier (19.6% for 2003–04 discharges, Jencks et al., *NEJM* 2009).\nIt rises from **2.3%** for patient",
+        "metadata": {
+          "source_tag": "medicare-claims-analytics",
+          "source": "demo/corpus/medicare-claims-analytics/README.md",
+          "chunk_index": 4,
+          "char_count": 687,
+          "format": "md"
+        }
+      }
+    ],
+    "timings": {
+      "plan_ms": 0.03,
+      "embed_ms": 700.46,
+      "search_ms": 495.32,
+      "rerank_ms": 99.18,
+      "generate_ms": 0.26,
+      "total_ms": 1295.26
+    },
+    "request_id": "6f5815ae-f835-4842-9c92-beda1b24477a"
+  },
+  {
+    "question": "how does capability-runtime replay a workflow without calling a model?",
+    "sub_queries": [
+      "how does capability-runtime replay a workflow without calling a model?"
+    ],
+    "answer": "Answer assembled directly from the retrieved passages (set ANTHROPIC_API_KEY for synthesised answers):\n\n# capability-runtime\n\n[![tests](https://github.com/HarshitGadge/capability-runtime/actions/workflows/tests.yml/badge.svg)](https://github.com/HarshitGadge/capability-runtime/actions/workflows/tests.yml)\n\nAn LLM discovers a flow on a live application once. [1] The run is frozen into a typed, versioned\n**capability artifact**. [1] That artifact then replays **deterministically, with no model in the\nloop** — returning declared outputs, distinguishing legitimate business answers from real\nfailures, recovering from anticipated interruptions, and handing control to a human when it must\nnot proceed alone. [1] **The through-line is demonstrated, not asserted.** `npm run agent` gives a real LLM a\nnatural-language task and the capabilities as tools; it decides which to call, and deterministic\nreplay runs underneath — the model never sees the portal. [2] ---\n\n## Running without the model\n\n```bash\nnpm run fixtures # drive the flows from a fixed script → evidence/fixture-*/recording.json\nnpm run compile -- --recording evidence/fixture-read-balance/recording.json\n```\n\n`compile` rebuilds an artifact from a saved recording with no API call and no browser. [3] The model never sees the portal — deterministic replay runs\nunderneath each tool call, and the model reasons only about the task and the typed result. [5]",
+    "answer_mode": "extractive",
+    "citations": [
+      {
+        "chunk_id": "132b7e2442e7677ffab90a486d469680",
+        "source": "demo/corpus/capability-runtime/README.md",
+        "score": 0.848604,
+        "snippet": "# capability-runtime\n\n[![tests](https://github.com/HarshitGadge/capability-runtime/actions/workflows/tests.yml/badge.svg)](https://github.com/HarshitGadge/capability-runtime/actions/workflows/tests.yml)\n\nAn LLM discovers a flow on a live application once. The run is frozen into a typed, versioned\n**capability artifact*",
+        "metadata": {
+          "format": "md",
+          "chunk_index": 0,
+          "source": "demo/corpus/capability-runtime/README.md",
+          "char_count": 730,
+          "source_tag": "capability-runtime"
+        }
+      },
+      {
+        "chunk_id": "791938def72ad4eacf62502118750e8e",
+        "source": "demo/corpus/capability-runtime/REPORT.md",
+        "score": 0.738647,
+        "snippet": "**The through-line is demonstrated, not asserted.** `npm run agent` gives a real LLM a\nnatural-language task and the capabilities as tools; it decides which to call, and deterministic\nreplay runs underneath — the model never sees the portal. For a missing member it relays\n`MEMBER_NOT_FOUND` as a plain answer, because t",
+        "metadata": {
+          "source_tag": "capability-runtime",
+          "chunk_index": 7,
+          "char_count": 707,
+          "format": "md",
+          "source": "demo/corpus/capability-runtime/REPORT.md"
+        }
+      },
+      {
+        "chunk_id": "e2c569cd2dce3a5def4f8986906ce63a",
+        "source": "demo/corpus/capability-runtime/README.md",
+        "score": 0.729023,
+        "snippet": "---\n\n## Running without the model\n\n```bash\nnpm run fixtures # drive the flows from a fixed script → evidence/fixture-*/recording.json\nnpm run compile -- --recording evidence/fixture-read-balance/recording.json\n```\n\n`compile` rebuilds an artifact from a saved recording with no API call and no browser. It works on\na real",
+        "metadata": {
+          "source_tag": "capability-runtime",
+          "chunk_index": 25,
+          "char_count": 748,
+          "format": "md",
+          "source": "demo/corpus/capability-runtime/README.md"
+        }
+      },
+      {
+        "chunk_id": "744abf0291a5a837c475d9d6a5d99dc5",
+        "source": "demo/corpus/capability-runtime/REPORT.md",
+        "score": 0.720092,
+        "snippet": "# Design write-up\n\nAn LLM discovers a flow on a live application once. The run is frozen into a typed, versioned\n**capability artifact**. The artifact then replays with **no model in the loop**, returning\ndeclared outputs and distinguishing three things production actually throws at it: business\nanswers the caller did",
+        "metadata": {
+          "char_count": 785,
+          "format": "md",
+          "source_tag": "capability-runtime",
+          "chunk_index": 0,
+          "source": "demo/corpus/capability-runtime/REPORT.md"
+        }
+      },
+      {
+        "chunk_id": "62e9db7c74366751b83aafeade2c2647",
+        "source": "demo/corpus/capability-runtime/README.md",
+        "score": 0.715152,
+        "snippet": "### 6. Let an AI agent decide and call it\n\n```bash\nnpm run agent -- --task \"A member called in — what is the savings balance for member 12345?\"\nnpm run agent -- --task \"Can you confirm whether member 99999 exists in our system?\"\n```\n\nThis is the production shape: an LLM is given the capabilities as tools and a natural-",
+        "metadata": {
+          "source_tag": "capability-runtime",
+          "source": "demo/corpus/capability-runtime/README.md",
+          "char_count": 515,
+          "chunk_index": 19,
+          "format": "md"
+        }
+      }
+    ],
+    "timings": {
+      "plan_ms": 0.06,
+      "embed_ms": 588.38,
+      "search_ms": 201.62,
+      "rerank_ms": 97.09,
+      "generate_ms": 0.61,
+      "total_ms": 887.8
+    },
+    "request_id": "eabaffb8-7b76-416a-b789-d195a055374d"
+  }
+]
