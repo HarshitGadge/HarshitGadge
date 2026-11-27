@@ -174,6 +174,8 @@ flowchart LR
 ## Latest work
 
 <!--STATS:START-->
+In the last 30 days I merged **11** pull requests across **5** repositories and published **6** releases. <sub>Counted from the GitHub API on Nov 27, 2026.</sub>
+
 <!--STATS:END-->
 
 <!--ACTIVITY:START-->
