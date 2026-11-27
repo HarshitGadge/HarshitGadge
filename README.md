@@ -173,6 +173,9 @@ flowchart LR
 
 ## Latest work
 
+<!--STATS:START-->
+<!--STATS:END-->
+
 <!--ACTIVITY:START-->
 - `Nov 27` merged [Add built-in BM25 and dense retrievers](https://github.com/HarshitGadge/ragbench/pull/2) in **ragbench**
 - `Nov 27` merged [Add the core package: BEIR loader, metrics, bootstrap CIs, plug-in retrievers, CLI](https://github.com/HarshitGadge/ragbench/pull/1) in **ragbench**

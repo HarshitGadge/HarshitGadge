@@ -10,6 +10,10 @@ reports a merge as action "merged", so titles and links are fetched from the
 pull request itself. Titles that are team ticket slugs ("HelpersTask1462_...")
 are swapped for the title of the issue they name.
 
+The STATS block gets one sentence counting the pull requests merged and the
+releases published over the last 30 days, all from the API, so the numbers
+are never typed in by hand.
+
 It also rewrites the RELEASES block with the newest release of each of the
 user's own repos; the block stays empty, so the section doesn't show, until
 the first release exists.
@@ -22,7 +26,7 @@ import json
 import os
 import re
 import urllib.request
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 USER = "HarshitGadge"
@@ -32,6 +36,8 @@ LIMIT = 6
 SKIP_REPOS = {f"{USER}/{USER}"}
 REL_START, REL_END = "<!--RELEASES:START-->", "<!--RELEASES:END-->"
 RELEASE_LIMIT = 4
+STATS_START, STATS_END = "<!--STATS:START-->", "<!--STATS:END-->"
+STATS_DAYS = 30
 # Team branches are named like "HelpersTask1462_Process_Fix_the_examples_in_text_rules_md":
 # a prefix, "Task", the issue number, then the issue title with its punctuation lost.
 SLUG = re.compile(r"^[A-Za-z]+Task(\d+)_(.+)$")
@@ -131,9 +137,7 @@ def render(events: list[dict], fetch=get) -> str:
 def latest_releases(fetch=get) -> list[dict]:
     """The newest published release of each of the user's own public repos."""
     found = []
-    for repo in fetch(f"https://api.github.com/users/{USER}/repos?per_page=100&type=owner"):
-        if repo.get("fork") or repo.get("archived") or repo["full_name"] in SKIP_REPOS:
-            continue
+    for repo in own_repos(fetch):
         try:
             rel = fetch(f"https://api.github.com/repos/{repo['full_name']}/releases/latest")
         except Exception:  # 404 when a repo has no release yet
@@ -154,6 +158,46 @@ def render_releases(releases: list[dict]) -> str:
     return "\n".join(lines)
 
 
+def own_repos(fetch=get) -> list[dict]:
+    return [r for r in fetch(f"https://api.github.com/users/{USER}/repos?per_page=100&type=owner")
+            if not (r.get("fork") or r.get("archived") or r["full_name"] in SKIP_REPOS)]
+
+
+def recent_stats(now: datetime, fetch=get) -> dict:
+    """Merged pull requests (any public repo) and releases (own repos) in the window."""
+    since = now - timedelta(days=STATS_DAYS)
+    q = f"author:{USER}+type:pr+is:merged+merged:>={since:%Y-%m-%d}"
+    prs = fetch(f"https://api.github.com/search/issues?q={q}&per_page=100")
+    repos = {item["repository_url"] for item in prs.get("items", [])}
+    releases = 0
+    for repo in own_repos(fetch):
+        try:
+            rels = fetch(f"https://api.github.com/repos/{repo['full_name']}/releases?per_page=100")
+        except Exception:
+            continue
+        releases += sum(
+            1 for r in rels
+            if r.get("published_at") and not r.get("draft")
+            and datetime.fromisoformat(r["published_at"].replace("Z", "+00:00")) >= since
+        )
+    return {"prs": prs.get("total_count", 0), "repos": len(repos), "releases": releases}
+
+
+def plural(n: int, word: str) -> str:
+    return f"**{n}** {word}" + ("" if n == 1 else "s")
+
+
+def render_stats(stats: dict, now: datetime) -> str:
+    """One plain sentence, or nothing if there was no merged work in the window."""
+    if not stats["prs"]:
+        return ""
+    sentence = (f"In the last {STATS_DAYS} days I merged {plural(stats['prs'], 'pull request')} "
+                f"across {plural(stats['repos'], 'repository').replace('repositorys', 'repositories')}")
+    if stats["releases"]:
+        sentence += f" and published {plural(stats['releases'], 'release')}"
+    return f"{sentence}. <sub>Counted from the GitHub API on {now:%b %d, %Y}.</sub>\n"
+
+
 def replace_block(text: str, start: str, end: str, body: str) -> str:
     block = f"{start}\n{body}\n{end}" if body else f"{start}\n{end}"
     return re.sub(re.escape(start) + r".*?" + re.escape(end), lambda _: block, text, flags=re.S)
@@ -163,6 +207,8 @@ def main() -> None:
     readme = README.read_text(encoding="utf-8")
     updated = replace_block(readme, START, END, render(fetch_events()))
     updated = replace_block(updated, REL_START, REL_END, render_releases(latest_releases()))
+    now = datetime.now(timezone.utc)
+    updated = replace_block(updated, STATS_START, STATS_END, render_stats(recent_stats(now), now))
     if updated != readme:
         README.write_text(updated, encoding="utf-8")
         print("README updated")
