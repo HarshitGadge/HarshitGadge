@@ -28,7 +28,6 @@ Each of my projects comes with a number and a test that backs it up.
 | Role | Where | When | What I worked on |
 |---|---|---|---|
 | **AI Engineer Intern** | Causify.AI · remote | Nov 2026 – now | AI engineering work alongside Prof. GP Saggese's research team |
-| **Research team member** | Prof. GP Saggese's team · University of Maryland | Nov 2026 – now | Agent-driven development workflows and GitHub Projects automation for the team's shared tooling |
 | **Data Analyst Intern** | Small Business Development Center · College Park, MD | Mar 2026 – Sep 2026 | SQL analysis of client outcomes that helped leadership decide where advisors spend their hours |
 | **Technical Systems & Data Intern** | WENITE Inc. · remote | Dec 2025 – Feb 2026 | Versioned training datasets with Spark preprocessing, and checking an LLM data agent on an evaluation set before its pilot |
 | **Data Analytics Engineer** | Kuhoo Finance · lending fintech, India | Oct 2023 – Jul 2024 | KYC and fraud-screening rules, AWS Glue and PySpark pipelines, A/B tests on the loan funnel |
