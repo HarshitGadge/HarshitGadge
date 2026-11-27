@@ -4,7 +4,7 @@
     <source media="(max-width: 600px)" srcset="assets/studio-hero-phone-light.svg">
     <source media="(prefers-color-scheme: dark)" srcset="assets/studio-hero-dark.svg">
     <source media="(prefers-color-scheme: light)" srcset="assets/studio-hero-light.svg">
-    <img alt="Harshit Gadge: spectrum analyzer bars dance and settle into my name. AI and data engineer, open to full-time roles." src="assets/studio-hero-dark.svg" width="100%">
+    <img alt="Now playing: Harshit Gadge, AI Engineer. RAG, agents and data pipelines, open to full-time roles. A DJ deck screen with a turning jog wheel and a scrolling waveform." src="assets/studio-hero-dark.svg" width="100%">
   </picture>
 </a>
 
