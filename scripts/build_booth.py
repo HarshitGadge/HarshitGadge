@@ -31,14 +31,16 @@ STYLE = {
     "medicare-claims-analytics": ("#f472b6", "dots"),
     "kafka-databricks-nasa": ("#38bdf8", "burst"),
     "fraud-screening": ("#fb7185", "grid"),
+    "ragbench": ("#a3e635", "bars"),
 }
 # Darker text accents for the light theme, so the liner reads on white.
 LIGHT_TEXT = {
     "#2dd4bf": "#0f766e", "#a78bfa": "#8250df", "#f0b429": "#9a6700",
     "#f472b6": "#bf3989", "#38bdf8": "#0969da", "#fb7185": "#cf222e",
+    "#a3e635": "#4d7c0f",
 }
 SLEEVE_BG = "#0b0d11"
-# Running order on the booth page and in the README (A1 to A6).
+# Running order on the booth page and in the README (A1 to A7).
 ORDER = list(STYLE)
 
 
@@ -97,6 +99,13 @@ def pattern(kind: str, c: str) -> str:
         return (f'<defs><linearGradient id="g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="{SLEEVE_BG}"/>'
                 f'<stop offset="1" stop-color="{c}" stop-opacity=".35"/></linearGradient></defs>'
                 f'{bg}<rect width="156" height="156" fill="url(#g)"/>' + lines)
+    if kind == "bars":
+        out = [bg]
+        for x in range(0, 156, 22):
+            out.append(f'<rect x="{x + 6}" width="6" height="156" fill="{c}" opacity=".47"/>')
+        for y in range(0, 156, 22):
+            out.append(f'<rect y="{154 - y}" width="156" height="2" fill="{c}"/>')
+        return "".join(out)
     raise ValueError(kind)
 
 

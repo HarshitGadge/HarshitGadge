@@ -45,7 +45,7 @@ Each of my projects comes with a number and a test that backs it up.
 
 | Demo | What you'll see |
 |---|---|
-| **[The booth →](https://harshitgadge.github.io)** | My projects as records on a turntable. Put one on and its song starts; then ask it a question, and the RAG service from the animation above searches only that project's docs and answers with every sentence cited to its source, showing how long each step took. Five of the six records take questions (fraud screening's docs aren't indexed yet). It's read-only, and on a free instance the first question after a quiet spell takes about a minute. ([raw API](https://agentic-rag-service-fxsc.onrender.com/docs)) |
+| **[The booth →](https://harshitgadge.github.io)** | My projects as records on a turntable. Put one on and its song starts; then ask it a question, and the RAG service from the animation above searches only that project's docs and answers with every sentence cited to its source, showing how long each step took. Six of the seven records take questions (fraud screening's docs aren't indexed yet). It's read-only, and on a free instance the first question after a quiet spell takes about a minute. ([raw API](https://agentic-rag-service-fxsc.onrender.com/docs)) |
 | **[Medicare claims dashboard →](https://hgadge-medicare-claims.streamlit.app)** | PMPM, cost concentration, readmissions and state comparisons over 116,352 synthetic Medicare beneficiaries from the CMS DE-SynPUF sample, built from the dbt marts. |
 
 <p align="center">
@@ -65,9 +65,10 @@ Each project is a record. Pick a sleeve to play it on [the booth](https://harshi
   <a href="https://harshitgadge.github.io/#medicare-claims-analytics"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-medicare-claims-analytics-dark.svg"><img alt="medicare-claims-analytics: +6.7 points of next year's high-cost members found" src="assets/sleeve-medicare-claims-analytics-light.svg" width="49%"></picture></a>
   <a href="https://harshitgadge.github.io/#kafka-databricks-nasa"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-kafka-databricks-nasa-dark.svg"><img alt="kafka-databricks-nasa: 33 tests" src="assets/sleeve-kafka-databricks-nasa-light.svg" width="49%"></picture></a>
   <a href="https://harshitgadge.github.io/#fraud-screening"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-fraud-screening-dark.svg"><img alt="fraud screening: 77% of fraud caught reviewing the top 5%" src="assets/sleeve-fraud-screening-light.svg" width="49%"></picture></a>
+  <a href="https://harshitgadge.github.io/#ragbench"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sleeve-ragbench-dark.svg"><img alt="ragbench: +0.196 nDCG@10, dense over BM25 on ArguAna, 95% CI +0.178 to +0.215" src="assets/sleeve-ragbench-light.svg" width="49%"></picture></a>
 </p>
 
-<p align="center"><sub>Straight to the code: <a href="https://github.com/HarshitGadge/agentic-rag-service">agentic-rag-service</a> · <a href="https://github.com/HarshitGadge/capability-runtime">capability-runtime</a> · <a href="https://github.com/HarshitGadge/payments-data-platform">payments-data-platform</a> · <a href="https://github.com/HarshitGadge/medicare-claims-analytics">medicare-claims-analytics</a> · <a href="https://github.com/HarshitGadge/kafka-databricks-nasa">kafka-databricks-nasa</a> · <a href="https://github.com/HarshitGadge/fraud-screening">fraud-screening</a></sub></p>
+<p align="center"><sub>Straight to the code: <a href="https://github.com/HarshitGadge/agentic-rag-service">agentic-rag-service</a> · <a href="https://github.com/HarshitGadge/capability-runtime">capability-runtime</a> · <a href="https://github.com/HarshitGadge/payments-data-platform">payments-data-platform</a> · <a href="https://github.com/HarshitGadge/medicare-claims-analytics">medicare-claims-analytics</a> · <a href="https://github.com/HarshitGadge/kafka-databricks-nasa">kafka-databricks-nasa</a> · <a href="https://github.com/HarshitGadge/fraud-screening">fraud-screening</a> · <a href="https://github.com/HarshitGadge/ragbench">ragbench</a></sub></p>
 
 **Team project:** [Tatva Silicon Agri](https://github.com/hrathore1995/Agri-crop-pest-prediction-and-detection) (crop disease and pest prediction for Indian agriculture, built with one teammate). It has four tracks in one Streamlit app:
 - **Leaf disease classifier:** MobileNetV3-small at **96.0% test accuracy** and **0.939 macro-F1** across 30 disease classes on 5 crops, after checking the split for leakage.
@@ -194,10 +195,10 @@ flowchart LR
   <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="assets/poster-phone-dark.svg">
   <source media="(max-width: 600px)" srcset="assets/poster-phone-light.svg">
   <source media="(prefers-color-scheme: dark)" srcset="assets/poster-dark.svg">
-  <img src="assets/poster-light.svg" width="100%" alt="Festival poster, Winter Builds: RAGBench, Grounded Policy Assistant and Market Intelligence Platform are coming soon. Already out: agentic-rag-service, capability-runtime, payments-data-platform, medicare-claims-analytics and kafka-databricks-nasa.">
+  <img src="assets/poster-light.svg" width="100%" alt="Festival poster, Winter Builds: Grounded Policy Assistant and Market Intelligence Platform are coming soon. Already out: agentic-rag-service, capability-runtime, payments-data-platform, medicare-claims-analytics, kafka-databricks-nasa, fraud-screening and ragbench.">
 </picture>
 
-These three are being built in the open over the holidays. They get numbers here once they have runs to back them.
+These two are being built in the open over the holidays. They get numbers here once they have runs to back them.
 
 ## Notes
 

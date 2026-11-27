@@ -1,9 +1,9 @@
 """Render the festival poster (what's coming) and the backstage pass (contact).
 
-The poster bills the three projects I'm building next as headliners, marked
+The poster bills the projects I'm building next as headliners, marked
 "coming soon" and carrying no numbers: every number on this page has to come
 from a run in a repo, and these don't have runs yet. Under them, the setlist
-names the first five records already out, in the booth's running order.
+names every record already out, in the booth's running order.
 
 The pass carries the same contact details as the links at the top of the
 README.
@@ -24,13 +24,12 @@ from build_studio import DARK, LIGHT, Theme
 SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif"
 MONO = "ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace"
 
-# The three projects I'm building next. No numbers here until they have runs.
+# The projects I'm building next. No numbers here until they have runs.
 HEADLINERS = [
-    ("RAGBench", "An open-source harness for evaluating RAG pipelines"),
     ("Grounded Policy Assistant", "Agentic RAG over public US regulatory documents, with cited answers and refusals"),
     ("Market Intelligence Platform", "An event-driven, multi-agent research copilot for market intelligence"),
 ]
-SETLIST = ORDER[:5]   # the first five records in the booth
+SETLIST = ORDER   # every record in the booth
 
 # Contact details, as the README's top links give them.
 CONTACT = [

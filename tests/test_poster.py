@@ -26,8 +26,9 @@ def test_headliners_are_coming_soon_and_carry_no_numbers():
         assert not any(re.search(r"\d", l) for l in others), (name, others)
 
 
-def test_setlist_is_the_first_five_records_in_booth_order():
-    assert bp.SETLIST == ORDER[:5]
+def test_setlist_is_every_record_in_booth_order():
+    assert bp.SETLIST == ORDER
+    assert "ragbench" in bp.SETLIST and "RAGBench" not in dict(bp.HEADLINERS)
     for name, svg in bp.render().items():
         if name.startswith("poster"):
             joined = " ".join(texts(svg))
