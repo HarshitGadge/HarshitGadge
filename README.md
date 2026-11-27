@@ -1,8 +1,8 @@
 <a href="https://agentic-rag-service-fxsc.onrender.com/docs">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.svg">
-    <source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg">
-    <img alt="Harshit Gadge — an animated terminal asks my portfolio Q&A service a question and it answers with a citation" src="assets/hero-dark.svg" width="100%">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.svg?v=2">
+    <source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg?v=2">
+    <img alt="Harshit Gadge — an animated terminal asks my portfolio Q&A service a question and it answers with a citation" src="assets/hero-dark.svg?v=2" width="100%">
   </picture>
 </a>
 
@@ -20,7 +20,7 @@ Each of my projects comes with a number and a test that backs it up.
 
 ## Try it live
 
-| | |
+| Demo | What you'll see |
 |---|---|
 | **[Ask my portfolio →](https://agentic-rag-service-fxsc.onrender.com/docs)** | The RAG service from the animation above. It has indexed the design docs of the five projects below. Open `POST /query` → **Try it out** and ask something like *"How are hospital readmissions defined?"* Every answer comes with citations. It's read-only, and on a free instance the first request after a quiet spell takes about a minute. |
 | **[Medicare claims dashboard →](https://hgadge-medicare-claims.streamlit.app)** | PMPM, cost concentration, readmissions and state comparisons over 108k synthetic Medicare members, built from the dbt marts. |
@@ -28,12 +28,12 @@ Each of my projects comes with a number and a test that backs it up.
 ## Featured work
 
 <p align="center">
-  <a href="https://github.com/HarshitGadge/agentic-rag-service"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-agentic-rag-service-dark.svg"><img alt="agentic-rag-service: +5.0 nDCG@10 on SciFact" src="assets/card-agentic-rag-service-light.svg" width="49%"></picture></a>
-  <a href="https://github.com/HarshitGadge/capability-runtime"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-capability-runtime-dark.svg"><img alt="capability-runtime: 0 model calls per production replay" src="assets/card-capability-runtime-light.svg" width="49%"></picture></a>
-  <a href="https://github.com/HarshitGadge/payments-data-platform"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-payments-data-platform-dark.svg"><img alt="payments-data-platform: 102 tests" src="assets/card-payments-data-platform-light.svg" width="49%"></picture></a>
-  <a href="https://github.com/HarshitGadge/medicare-claims-analytics"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-medicare-claims-analytics-dark.svg"><img alt="medicare-claims-analytics: +6.7 points of next year's high-cost members found" src="assets/card-medicare-claims-analytics-light.svg" width="49%"></picture></a>
-  <a href="https://github.com/HarshitGadge/kafka-databricks-nasa"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-kafka-databricks-nasa-dark.svg"><img alt="kafka-databricks-nasa: 33 tests" src="assets/card-kafka-databricks-nasa-light.svg" width="49%"></picture></a>
-  <a href="https://github.com/HarshitGadge/Detecting_Fradulent_job"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-detecting_fradulent_job-dark.svg"><img alt="fraud screening: 77% of fraud caught reviewing the top 5%" src="assets/card-detecting_fradulent_job-light.svg" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/agentic-rag-service"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-agentic-rag-service-dark.svg?v=2"><img alt="agentic-rag-service: +5.0 nDCG@10 on SciFact" src="assets/card-agentic-rag-service-light.svg?v=2" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/capability-runtime"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-capability-runtime-dark.svg?v=2"><img alt="capability-runtime: 0 model calls per production replay" src="assets/card-capability-runtime-light.svg?v=2" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/payments-data-platform"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-payments-data-platform-dark.svg?v=2"><img alt="payments-data-platform: 102 tests" src="assets/card-payments-data-platform-light.svg?v=2" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/medicare-claims-analytics"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-medicare-claims-analytics-dark.svg?v=2"><img alt="medicare-claims-analytics: +6.7 points of next year's high-cost members found" src="assets/card-medicare-claims-analytics-light.svg?v=2" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/kafka-databricks-nasa"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-kafka-databricks-nasa-dark.svg?v=2"><img alt="kafka-databricks-nasa: 33 tests" src="assets/card-kafka-databricks-nasa-light.svg?v=2" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/Detecting_Fradulent_job"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-detecting_fradulent_job-dark.svg?v=2"><img alt="fraud screening: 77% of fraud caught reviewing the top 5%" src="assets/card-detecting_fradulent_job-light.svg?v=2" width="49%"></picture></a>
 </p>
 
 ## How they work
