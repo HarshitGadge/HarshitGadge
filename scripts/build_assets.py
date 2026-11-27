@@ -374,7 +374,7 @@ CARDS = [
          ("DuckDB SQL", "scikit-learn", "LightGBM")),
     Card("ragbench", "EVALUATION · OPEN SOURCE", "ragbench",
          ("Evaluate any retriever on BEIR-format data:", "per-query scores, bootstrap CIs, a paired compare."),
-         "+0.196", ("nDCG@10, dense over BM25 on", "ArguAna, 95% CI +0.178 to +0.215"),
+         "+0.196", ("nDCG@10, dense over BM25 on", "ArguAna, 95% CI +0.177 to +0.215"),
          ("Python stdlib", "BEIR", "pytrec_eval checks", "CI gate")),
 ]
 
