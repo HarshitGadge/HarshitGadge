@@ -180,7 +180,6 @@ flowchart LR
 
 <!--STATS:START-->
 In the last 30 days I merged **14** pull requests across **5** repositories and published **6** releases. <sub>Counted from the GitHub API on Nov 27, 2026.</sub>
-
 <!--STATS:END-->
 
 <!--ACTIVITY:START-->
@@ -202,6 +201,9 @@ In the last 30 days I merged **14** pull requests across **5** repositories and 
 - [**kafka-databricks-nasa** v1.0.0](https://github.com/HarshitGadge/kafka-databricks-nasa/releases/tag/v1.0.0) · `Nov 27, 2026`
 - [**payments-data-platform** v1.0.0](https://github.com/HarshitGadge/payments-data-platform/releases/tag/v1.0.0) · `Nov 27, 2026`
 <!--RELEASES:END-->
+
+<!--LEDGER:START-->
+<!--LEDGER:END-->
 
 ## For AI agents
 

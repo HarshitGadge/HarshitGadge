@@ -96,7 +96,7 @@ def test_stats_count_merged_prs_repos_and_recent_releases():
 def test_stats_sentence_wording():
     assert ua.render_stats({"prs": 3, "repos": 2, "releases": 1}, NOW) == (
         "In the last 30 days I merged **3** pull requests across **2** repositories and published **1** release. "
-        "<sub>Counted from the GitHub API on Nov 27, 2026.</sub>\n")
+        "<sub>Counted from the GitHub API on Nov 27, 2026.</sub>")
     assert ua.render_stats({"prs": 1, "repos": 1, "releases": 0}, NOW).startswith(
         "In the last 30 days I merged **1** pull request across **1** repository.")
     assert ua.render_stats({"prs": 0, "repos": 0, "releases": 4}, NOW) == ""

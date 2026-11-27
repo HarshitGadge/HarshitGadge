@@ -195,7 +195,7 @@ def render_stats(stats: dict, now: datetime) -> str:
                 f"across {plural(stats['repos'], 'repository').replace('repositorys', 'repositories')}")
     if stats["releases"]:
         sentence += f" and published {plural(stats['releases'], 'release')}"
-    return f"{sentence}. <sub>Counted from the GitHub API on {now:%b %d, %Y}.</sub>\n"
+    return f"{sentence}. <sub>Counted from the GitHub API on {now:%b %d, %Y}.</sub>"
 
 
 def replace_block(text: str, start: str, end: str, body: str) -> str:
