@@ -39,127 +39,298 @@ LIGHT = Theme("light", "#ffffff", "#f6f8fa", "#ffffff", "#d0d7de",
 
 
 # ---------------------------------------------------------------------------
-# Hero: name, tagline, and a terminal that asks the live RAG demo a question
+# Hero: name, tagline, and a terminal that asks the live RAG demo questions
 # ---------------------------------------------------------------------------
-CYCLE = 18.0          # seconds per loop
-FADE_OUT = (94.0, 97.0)  # % of the cycle where everything fades together
-CHAR_W = 8.1          # advance width of 13.5px monospace, close enough for a cover rect
+# Every answer below is copied, not written. Each one is a single cited sentence
+# taken verbatim from the live service's response to exactly that question
+# (POST https://agentic-rag-service-fxsc.onrender.com/query). The full responses
+# are saved in scripts/hero_responses.json, and check_answers() refuses to build
+# if a sentence, its [n] marker or its source file stops matching them.
+RESPONSES = Path(__file__).resolve().parent / "hero_responses.json"
+
+
+@dataclass(frozen=True)
+class QA:
+    question: str
+    sentence: str      # verbatim from the response's `answer`, whitespace collapsed
+    marker: str        # the [n] that follows the sentence in the response
+    source: str        # citations[n-1].source in the same response
+
+
+QAS = [
+    QA("how does the payments pipeline ignore a stale, replayed CDC event?",
+       "The MERGE guards on `cdc_lsn > target.cdc_lsn`, so a stale event re-applied after a newer one is ignored.",
+       "[5]", "demo/corpus/payments-data-platform/README.md"),
+    QA("how are hospital readmissions defined in the Medicare claims project?",
+       "**Readmissions:** an index stay is discharged alive with 30 days of follow-up left in the data, "
+       "and a readmission is any stay starting 1–30 days later.",
+       "[1]", "demo/corpus/medicare-claims-analytics/README.md"),
+    QA("how does capability-runtime replay a workflow without calling a model?",
+       "The model never sees the portal — deterministic replay runs underneath each tool call, "
+       "and the model reasons only about the task and the typed result.",
+       "[5]", "demo/corpus/capability-runtime/README.md"),
+]
+
+
+def check_answers() -> None:
+    """Fail the build unless every hero answer is the service's own words and citation."""
+    import json
+    import re
+
+    def flat(s: str) -> str:
+        return re.sub(r"\s+", " ", s).strip()
+
+    responses = {r["question"]: r for r in json.loads(RESPONSES.read_text(encoding="utf-8"))}
+    for qa in QAS:
+        r = responses.get(qa.question)
+        assert r is not None, f"no saved response for {qa.question!r}"
+        assert f"{qa.sentence} {qa.marker}" in flat(r["answer"]), f"not verbatim in the response: {qa.sentence!r}"
+        n = int(qa.marker.strip("[]"))
+        assert r["citations"][n - 1]["source"] == qa.source, f"{qa.marker} is not {qa.source}"
+
+
+SLOT = 18.0                     # seconds each question stays on screen
+CYCLE = SLOT * len(QAS)         # one full loop through every question
+SLOT_FADE = (0.94, 0.97)        # fraction of a slot where its content fades out
 
 
 def pct(seconds: float) -> float:
-    return round(seconds / CYCLE * 100, 2)
+    return round(seconds / CYCLE * 100, 3)
 
 
-def appear(name: str, at: float) -> str:
-    """Keyframes: hidden until `at` seconds, fade in over 0.35s, hold, fade with the rest."""
-    a, b = pct(at), pct(at + 0.35)
+def appear(name: str, at: float, slot: int) -> str:
+    """Keyframes: hidden until `at` seconds into `slot`, fade in over 0.35s, hold, fade with the slot."""
+    base = slot * SLOT
+    a, b = pct(base + at), pct(base + at + 0.35)
+    f0, f1 = pct(base + SLOT * SLOT_FADE[0]), pct(base + SLOT * SLOT_FADE[1])
     return (f"@keyframes {name}{{0%,{a}%{{opacity:0;transform:translateY(4px)}}"
-            f"{b}%,{FADE_OUT[0]}%{{opacity:1;transform:none}}"
-            f"{FADE_OUT[1]}%,100%{{opacity:0}}}}")
+            f"{b}%,{f0}%{{opacity:1;transform:none}}"
+            f"{f1}%,100%{{opacity:0}}}}")
 
 
-def typing(name: str, start: float, end: float, width: float, chars: int) -> str:
-    """Keyframes that slide a cover rect right one character at a time."""
-    s, e = pct(start), pct(end)
+def window(name: str, a: float, b: float, slot: int) -> str:
+    """Keyframes: fully visible from `a` to `b` seconds into `slot`, hidden otherwise (hard cuts)."""
+    base = slot * SLOT
+    s, e = pct(base + a), pct(base + b)
+    parts = []
+    if s > 0:
+        parts.append(f"0%,{round(s - 0.001, 3)}%{{opacity:0}}")
+    parts.append(f"{s}%,{e}%{{opacity:1}}")
+    if e < 100:
+        parts.append(f"{round(e + 0.001, 3)}%,100%{{opacity:0}}")
+    return f"@keyframes {name}{{{''.join(parts)}}}"
+
+
+def typing(name: str, start: float, end: float, width: float, chars: int, slot: int) -> str:
+    """Keyframes that slide a cover rect right one character at a time within `slot`."""
+    base = slot * SLOT
+    s, e = pct(base + start), pct(base + end)
+    f1 = pct(base + SLOT * SLOT_FADE[1])
     return (f"@keyframes {name}{{0%,{s}%{{transform:translateX(0);animation-timing-function:steps({chars},end)}}"
-            f"{e}%,{FADE_OUT[1]}%{{transform:translateX({width:.1f}px)}}"
-            f"{FADE_OUT[1] + 0.5}%,100%{{transform:translateX(0)}}}}")
+            f"{e}%,{f1}%{{transform:translateX({width:.1f}px)}}"
+            f"{round(f1 + 0.5, 3)}%,100%{{transform:translateX(0)}}}}")
 
 
-def hero(t: Theme) -> str:
-    W, H = 960, 470
-    tx, ty, tw, th = 24, 150, W - 48, 296          # terminal window
-    lx = tx + 22                                    # text left edge
-    question = 'ask "how does the payments pipeline ignore a stale, replayed CDC event?"'
-    q_w = (len(question) + 1) * CHAR_W
+def wrap(text: str, width: int) -> list[str]:
+    """Greedy word wrap that keeps every character of `text` (lines rejoin with single spaces)."""
+    lines: list[str] = []
+    cur = ""
+    for word in text.split(" "):
+        if cur and len(cur) + 1 + len(word) > width:
+            lines.append(cur)
+            cur = word
+        else:
+            cur = f"{cur} {word}" if cur else word
+    lines.append(cur)
+    return lines
 
-    trace = [
-        ("plan", "decompose multi-part questions into sub-queries"),
-        ("retrieve", "vector search per sub-query, top-k 5"),
-        ("fuse", "reciprocal rank fusion across sub-queries"),
-        ("assess", "broaden and retry if coverage is weak (max 2 rounds)"),
-    ]
-    answer = [
-        "The MERGE guards on `cdc_lsn > target.cdc_lsn`, so a stale event",
-        "re-applied after a newer one is ignored.  [5]",
-    ]
 
+@dataclass(frozen=True)
+class HeroLayout:
+    """Geometry for one hero size. `wide` is the desktop banner, `narrow` the phone one."""
+    name: str
+    W: int
+    mono: float          # monospace font size in the terminal
+    char_w: float        # advance width at that size, close enough for a cover rect
+    line_h: float        # terminal line height
+    q_wrap: int          # characters per question line (0: one line after the prompt)
+    a_wrap: int          # characters per answer line
+    trace: tuple[tuple[str, str], ...]
+    answer_note: str
+
+
+WIDE = HeroLayout(
+    "wide", 960, 13.5, 8.1, 22, 0, 100,
+    (("plan", "decompose multi-part questions into sub-queries"),
+     ("retrieve", "vector search per sub-query, top-k 5"),
+     ("fuse", "reciprocal rank fusion across sub-queries"),
+     ("assess", "broaden and retry if coverage is weak (max 2 rounds)")),
+    "  extractive · excerpt, cited to the retrieved passage",
+)
+NARROW = HeroLayout(
+    "narrow", 480, 15.0, 9.0, 24, 44, 44,
+    (("plan", "split multi-part questions"),
+     ("retrieve", "vector search, top-k 5"),
+     ("fuse", "reciprocal rank fusion"),
+     ("assess", "retry if coverage is weak")),
+    "  extractive · cited excerpt",
+)
+
+
+def hero(t: Theme, L: HeroLayout) -> str:
+    W = L.W
+    narrow = L is NARROW
     css = [
-        f"text{{font-family:{MONO};font-size:13.5px;fill:{t.text}}}",
+        f"text{{font-family:{MONO};font-size:{L.mono}px;fill:{t.text}}}",
         f".sans{{font-family:{SANS}}}",
         f".muted{{fill:{t.muted}}}",
         f".acc{{fill:{t.accent}}}",
         f".acc2{{fill:{t.accent2}}}",
         f".grn{{fill:{t.green}}}",
         f".pur{{fill:{t.purple}}}",
+        f".sm{{font-size:{L.mono - 2}px}}",
         "@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}",
         "@keyframes pulse{0%{transform:scale(1);opacity:.9}70%,100%{transform:scale(2.8);opacity:0}}",
-        "@keyframes sweep{0%{transform:translateX(-320px)}100%{transform:translateX(980px)}}",
-        f".cursor{{animation:blink 1s step-end infinite}}",
-        f".ring{{animation:pulse 2.2s ease-out infinite;transform-box:fill-box;transform-origin:center}}",
-        f".sweep{{animation:sweep 6s linear infinite}}",
-        typing("type", 0.6, 3.4, q_w, len(question) + 1),
-        f".typer{{animation:type {CYCLE}s infinite}}",
+        f"@keyframes sweep{{0%{{transform:translateX(-320px)}}100%{{transform:translateX({W + 20}px)}}}}",
+        ".cursor{animation:blink 1s step-end infinite}",
+        ".ring{animation:pulse 2.2s ease-out infinite;transform-box:fill-box;transform-origin:center}",
+        f".sweep{{animation:sweep {6 if not narrow else 4}s linear infinite}}",
     ]
 
     body: list[str] = []
     # header
-    body.append(f'<text x="24" y="58" class="sans" style="font-size:34px;font-weight:700;letter-spacing:-.5px">Harshit Gadge</text>')
-    body.append(f'<text x="24" y="90" class="sans muted" style="font-size:16px">AI engineer &#183; data engineer &#8212; I build AI and data systems, then measure whether they work.</text>')
-    body.append(f'<circle cx="31" cy="116" r="4" fill="{t.green}"/><circle cx="31" cy="116" r="4" fill="none" stroke="{t.green}" stroke-width="2" class="ring"/>')
-    body.append(f'<text x="44" y="120.5" class="sans" style="font-size:13.5px"><tspan class="grn" style="font-weight:600">open to work</tspan><tspan class="muted"> &#183; AI Engineer &#183; Data Engineer &#183; Data Scientist</tspan></text>')
-    body.append(f'<text x="{W-24}" y="120.5" text-anchor="end" class="sans muted" style="font-size:13px">MS Data Science, UMD &#183; patent co-inventor</text>')
+    if narrow:
+        m = 20
+        body.append(f'<text x="{m}" y="50" class="sans" style="font-size:30px;font-weight:700;letter-spacing:-.5px">Harshit Gadge</text>')
+        body.append(f'<text x="{m}" y="80" class="sans muted" style="font-size:16px">AI engineer &#183; data engineer &#8212; I build AI</text>')
+        body.append(f'<text x="{m}" y="102" class="sans muted" style="font-size:16px">and data systems, then measure whether they work.</text>')
+        body.append(f'<circle cx="{m + 7}" cy="129" r="4.5" fill="{t.green}"/><circle cx="{m + 7}" cy="129" r="4.5" fill="none" stroke="{t.green}" stroke-width="2" class="ring"/>')
+        body.append(f'<text x="{m + 20}" y="134" class="sans grn" style="font-size:15px;font-weight:600">open to work</text>')
+        body.append(f'<text x="{m}" y="160" class="sans muted" style="font-size:15px">AI Engineer &#183; Data Engineer &#183; Data Scientist</text>')
+        body.append(f'<text x="{m}" y="184" class="sans muted" style="font-size:15px">MS Data Science, UMD &#183; patent co-inventor</text>')
+        tx, ty = 14, 204
+    else:
+        body.append('<text x="24" y="58" class="sans" style="font-size:34px;font-weight:700;letter-spacing:-.5px">Harshit Gadge</text>')
+        body.append('<text x="24" y="90" class="sans muted" style="font-size:16px">AI engineer &#183; data engineer &#8212; I build AI and data systems, then measure whether they work.</text>')
+        body.append(f'<circle cx="31" cy="116" r="4" fill="{t.green}"/><circle cx="31" cy="116" r="4" fill="none" stroke="{t.green}" stroke-width="2" class="ring"/>')
+        body.append('<text x="44" y="120.5" class="sans" style="font-size:13.5px"><tspan class="grn" style="font-weight:600">open to work</tspan><tspan class="muted"> &#183; AI Engineer &#183; Data Engineer &#183; Data Scientist</tspan></text>')
+        body.append(f'<text x="{W - 24}" y="120.5" text-anchor="end" class="sans muted" style="font-size:13px">MS Data Science, UMD &#183; patent co-inventor</text>')
+        tx, ty = 24, 150
+    tw = W - 2 * tx
+    lx = tx + (18 if narrow else 22)
+    bar = 34 if narrow else 30
+
+    # Lay out every slot first, so the terminal is tall enough for the longest answer.
+    prompt = "harshit@portfolio:~$ "
+    slots = []
+    tallest = 0.0
+    for qa in QAS:
+        asked = f'ask "{qa.question}"'
+        q_lines = wrap(asked, L.q_wrap) if L.q_wrap else [asked]
+        a_lines = wrap(f"{qa.sentence} {qa.marker}", L.a_wrap)
+        y = bar + 28                                   # first line, relative to the terminal top
+        q_ys = [y + (i + (1 if L.q_wrap else 0)) * L.line_h for i in range(len(q_lines))]
+        y = q_ys[-1] + L.line_h + 10                    # trace
+        tr_y = y
+        y += len(L.trace) * L.line_h + 12               # answer header
+        ah_y = y
+        y += L.line_h + 2
+        a_ys = [y + i * (L.line_h - 1) for i in range(len(a_lines))]
+        y = a_ys[-1] + L.line_h + 4                     # citation
+        ci_y = y
+        y += (L.line_h - 2) if narrow else 0
+        tallest = max(tallest, y + (22 if narrow else 24))
+        slots.append((qa, q_lines, q_ys, tr_y, ah_y, a_lines, a_ys, ci_y))
+    th = round(tallest)
+    H = ty + th + (20 if narrow else 24)
 
     # terminal chrome
     body.append(f'<rect x="{tx}" y="{ty}" width="{tw}" height="{th}" rx="10" fill="{t.term}" stroke="{t.border}"/>')
-    body.append(f'<path d="M{tx} {ty+10}a10 10 0 0 1 10-10h{tw-20}a10 10 0 0 1 10 10v20h-{tw}z" fill="{t.panel}"/>')
-    body.append(f'<line x1="{tx}" y1="{ty+30}" x2="{tx+tw}" y2="{ty+30}" stroke="{t.border}"/>')
+    body.append(f'<path d="M{tx} {ty + 10}a10 10 0 0 1 10-10h{tw - 20}a10 10 0 0 1 10 10v{bar - 10}h-{tw}z" fill="{t.panel}"/>')
+    body.append(f'<line x1="{tx}" y1="{ty + bar}" x2="{tx + tw}" y2="{ty + bar}" stroke="{t.border}"/>')
     for i, c in enumerate(("#ff5f57", "#febc2e", "#28c840")):
-        body.append(f'<circle cx="{tx+18+i*18}" cy="{ty+15}" r="5.5" fill="{c}"/>')
-    body.append(f'<text x="{tx+tw/2}" y="{ty+19.5}" text-anchor="middle" class="muted" style="font-size:12px">agentic-rag-service &#8212; portfolio Q&amp;A</text>')
-    # light sweep along the title bar
+        body.append(f'<circle cx="{tx + 18 + i * 18}" cy="{ty + bar / 2}" r="5.5" fill="{c}"/>')
+    title = "agentic-rag-service &#8212; portfolio Q&amp;A"
+    body.append(f'<text x="{tx + tw / 2}" y="{ty + bar / 2 + 4.5}" text-anchor="middle" class="muted" style="font-size:12px">{title}</text>')
     body.append(f'<defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="{t.accent}" stop-opacity="0"/><stop offset=".5" stop-color="{t.accent}" stop-opacity=".9"/><stop offset="1" stop-color="{t.accent}" stop-opacity="0"/></linearGradient>'
                 f'<clipPath id="tc"><rect x="{tx}" y="{ty}" width="{tw}" height="{th}" rx="10"/></clipPath></defs>')
-    body.append(f'<g clip-path="url(#tc)"><rect class="sweep" x="0" y="{ty+29}" width="300" height="2" fill="url(#g)"/></g>')
+    body.append(f'<g clip-path="url(#tc)"><rect class="sweep" x="0" y="{ty + bar - 1}" width="300" height="2" fill="url(#g)"/></g>')
 
-    # line 1: typed question
-    y = ty + 58
-    body.append(f'<text x="{lx}" y="{y}"><tspan class="acc">harshit@portfolio</tspan><tspan class="muted">:~$ </tspan></text>')
-    qx = lx + len("harshit@portfolio:~$ ") * CHAR_W
-    body.append(f'<text x="{qx}" y="{y}">{escape(question)}</text>')
-    body.append(f'<g clip-path="url(#tc)"><g class="typer"><rect x="{qx}" y="{y-14}" width="{q_w+12}" height="20" fill="{t.term}"/>'
-                f'<rect class="cursor" x="{qx}" y="{y-12}" width="8" height="16" fill="{t.accent}"/></g></g>')
+    # one dot per question in the title bar; the current one lights up
+    for k in range(len(QAS)):
+        cx = tx + tw - 18 - (len(QAS) - 1 - k) * 14
+        body.append(f'<circle cx="{cx}" cy="{ty + bar / 2}" r="3.5" fill="none" stroke="{t.muted}" stroke-width="1.2"/>')
+        css.append(window(f"dot{k}", 0, SLOT, k))
+        css.append(f".dot{k}{{animation:dot{k} {CYCLE}s infinite}}")
+        body.append(f'<circle class="dot{k}" cx="{cx}" cy="{ty + bar / 2}" r="3.5" fill="{t.accent}"/>')
 
-    # trace
-    y += 32
-    for i, (stage, note) in enumerate(trace):
-        name = f"tr{i}"
-        css.append(appear(name, 3.9 + i * 0.55))
+    for k, (qa, q_lines, q_ys, tr_y, ah_y, a_lines, a_ys, ci_y) in enumerate(slots):
+        css.append(window(f"s{k}", 0, SLOT, k))
+        css.append(f".s{k}{{animation:s{k} {CYCLE}s infinite}}")
+        body.append(f'<g class="s{k}">')
+
+        # typed question; a cover rect slides off each line in turn
+        y0 = ty + q_ys[0] - (L.line_h if L.q_wrap else 0)
+        body.append(f'<text x="{lx}" y="{y0}"><tspan class="acc">harshit@portfolio</tspan><tspan class="muted">:~$ </tspan></text>')
+        qx0 = lx if L.q_wrap else lx + len(prompt) * L.char_w
+        total = sum(len(s) for s in q_lines)
+        start, per_char = 0.6, 0.038
+        for i, (line, ly) in enumerate(zip(q_lines, q_ys)):
+            y = ty + ly
+            chars = len(line) + 1
+            end = start + chars * per_char
+            w = chars * L.char_w
+            name = f"q{k}_{i}"
+            css.append(typing(name, start, end, w, chars, k))
+            css.append(f".{name}{{animation:{name} {CYCLE}s infinite}}")
+            body.append(f'<text x="{qx0}" y="{y}" xml:space="preserve">{escape(line)}</text>')
+            last = i == len(q_lines) - 1
+            css.append(window(f"k{k}_{i}", 0 if i == 0 else start, SLOT * SLOT_FADE[1] if last else end, k))
+            css.append(f".k{k}_{i}{{animation:k{k}_{i} {CYCLE}s infinite}}")
+            cursor = (f'<g class="k{k}_{i}"><rect class="cursor" x="{qx0}" y="{y - L.mono + 2}" '
+                      f'width="{L.char_w:.1f}" height="{L.mono + 2}" fill="{t.accent}"/></g>')
+            body.append(f'<g clip-path="url(#tc)"><g class="{name}"><rect x="{qx0}" y="{y - L.mono - 0.5}" width="{w + 14:.1f}" height="{L.line_h}" fill="{t.term}"/>{cursor}</g></g>')
+            start = end
+        typed_end = start
+        assert total > 0
+
+        # trace
+        for i, (stage, note) in enumerate(L.trace):
+            name = f"t{k}_{i}"
+            css.append(appear(name, typed_end + 0.5 + i * 0.55, k))
+            css.append(f".{name}{{animation:{name} {CYCLE}s infinite}}")
+            body.append(f'<g class="{name}"><text x="{lx}" y="{ty + tr_y + i * L.line_h}" xml:space="preserve"><tspan class="pur">&#9656; </tspan>'
+                        f'<tspan class="acc2">{stage:<9}</tspan><tspan class="muted"> {escape(note)}</tspan></text></g>')
+        t_ans = typed_end + 0.5 + len(L.trace) * 0.55 + 0.5
+
+        # answer
+        name = f"h{k}"
+        css.append(appear(name, t_ans, k))
         css.append(f".{name}{{animation:{name} {CYCLE}s infinite}}")
-        body.append(f'<g class="{name}"><text x="{lx}" y="{y}" xml:space="preserve"><tspan class="pur">&#9656; </tspan>'
-                    f'<tspan class="acc2">{stage:<9}</tspan><tspan class="muted"> {escape(note)}</tspan></text></g>')
-        y += 22
+        body.append(f'<g class="{name}"><text x="{lx}" y="{ty + ah_y}" xml:space="preserve"><tspan class="grn">&#10003; answer</tspan>'
+                    f'<tspan class="muted">{escape(L.answer_note)}</tspan></text></g>')
+        for i, (line, ly) in enumerate(zip(a_lines, a_ys)):
+            name = f"a{k}_{i}"
+            css.append(appear(name, t_ans + 0.6 + i * 0.45, k))
+            css.append(f".{name}{{animation:{name} {CYCLE}s infinite}}")
+            body.append(f'<g class="{name}"><text x="{lx}" y="{ty + ly}" xml:space="preserve">{escape(line)}</text></g>')
 
-    # answer
-    y += 12
-    css.append(appear("ah", 6.4))
-    css.append(f".ah{{animation:ah {CYCLE}s infinite}}")
-    body.append(f'<g class="ah"><text x="{lx}" y="{y}"><tspan class="grn">&#10003; answer</tspan>'
-                f'<tspan class="muted">  extractive &#183; excerpt, cited to the retrieved passage</tspan></text></g>')
-    y += 24
-    for i, line in enumerate(answer):
-        name = f"an{i}"
-        css.append(appear(name, 7.0 + i * 0.45))
+        name = f"c{k}"
+        css.append(appear(name, t_ans + 0.6 + len(a_lines) * 0.45 + 0.4, k))
         css.append(f".{name}{{animation:{name} {CYCLE}s infinite}}")
-        body.append(f'<g class="{name}"><text x="{lx}" y="{y}" xml:space="preserve">{escape(line)}</text></g>')
-        y += 21
-    y += 6
-    css.append(appear("ci", 8.7))
-    css.append(f".ci{{animation:ci {CYCLE}s infinite}}")
-    body.append(f'<g class="ci"><text x="{lx}" y="{y}"><tspan class="acc">[5]</tspan>'
-                f'<tspan class="muted"> demo/corpus/payments-data-platform/README.md &#183; live at agentic-rag-service-fxsc.onrender.com</tspan></text></g>')
+        live = "live at agentic-rag-service-fxsc.onrender.com"
+        if narrow:
+            body.append(f'<g class="{name}"><text x="{lx}" y="{ty + ci_y}" class="sm"><tspan class="acc">{qa.marker}</tspan>'
+                        f'<tspan class="muted"> {escape(qa.source)}</tspan></text>'
+                        f'<text x="{lx}" y="{ty + ci_y + L.line_h - 2}" class="sm muted">{live}</text></g>')
+        else:
+            body.append(f'<g class="{name}"><text x="{lx}" y="{ty + ci_y}"><tspan class="acc">{qa.marker}</tspan>'
+                        f'<tspan class="muted"> {escape(qa.source)} &#183; {live}</tspan></text></g>')
+        body.append("</g>")
 
-    return svg(W, H, t, css, body, "Harshit Gadge: an animated terminal asking the portfolio Q&A service a question and showing the cited answer")
+    label = ("Harshit Gadge: an animated terminal asks the portfolio Q&A service three questions in turn "
+             "and shows each cited answer")
+    return svg(W, H, t, css, body, label)
 
 
 # ---------------------------------------------------------------------------
@@ -249,9 +420,11 @@ def svg(w: int, h: int, t: Theme, css: list[str], body: list[str], label: str) -
 
 
 def main() -> None:
+    check_answers()
     ASSETS.mkdir(exist_ok=True)
     for t in (DARK, LIGHT):
-        (ASSETS / f"hero-{t.name}.svg").write_text(hero(t), encoding="utf-8")
+        (ASSETS / f"hero-{t.name}.svg").write_text(hero(t, WIDE), encoding="utf-8")
+        (ASSETS / f"hero-phone-{t.name}.svg").write_text(hero(t, NARROW), encoding="utf-8")
         for i, c in enumerate(CARDS):
             (ASSETS / f"card-{c.slug.lower()}-{t.name}.svg").write_text(card(c, t, delay=i * 1.1), encoding="utf-8")
     print(f"wrote {len(list(ASSETS.glob('*.svg')))} SVGs to {ASSETS}")

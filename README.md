@@ -1,8 +1,10 @@
 <a href="https://harshitgadge.github.io">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.svg?v=2">
-    <source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg?v=2">
-    <img alt="Harshit Gadge — an animated terminal asks my portfolio Q&A service a question and it answers with a citation" src="assets/hero-dark.svg?v=2" width="100%">
+    <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="assets/hero-phone-dark.svg?v=3">
+    <source media="(max-width: 600px)" srcset="assets/hero-phone-light.svg?v=3">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.svg?v=3">
+    <source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg?v=3">
+    <img alt="Harshit Gadge — an animated terminal asks my portfolio Q&A service three questions in turn and shows each cited answer" src="assets/hero-dark.svg?v=3" width="100%">
   </picture>
 </a>
 
@@ -28,12 +30,12 @@ Each of my projects comes with a number and a test that backs it up.
 ## Featured work
 
 <p align="center">
-  <a href="https://github.com/HarshitGadge/agentic-rag-service"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-agentic-rag-service-dark.svg?v=2"><img alt="agentic-rag-service: +5.0 nDCG@10 on SciFact" src="assets/card-agentic-rag-service-light.svg?v=2" width="49%"></picture></a>
-  <a href="https://github.com/HarshitGadge/capability-runtime"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-capability-runtime-dark.svg?v=2"><img alt="capability-runtime: 0 model calls per production replay" src="assets/card-capability-runtime-light.svg?v=2" width="49%"></picture></a>
-  <a href="https://github.com/HarshitGadge/payments-data-platform"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-payments-data-platform-dark.svg?v=2"><img alt="payments-data-platform: 102 tests" src="assets/card-payments-data-platform-light.svg?v=2" width="49%"></picture></a>
-  <a href="https://github.com/HarshitGadge/medicare-claims-analytics"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-medicare-claims-analytics-dark.svg?v=2"><img alt="medicare-claims-analytics: +6.7 points of next year's high-cost members found" src="assets/card-medicare-claims-analytics-light.svg?v=2" width="49%"></picture></a>
-  <a href="https://github.com/HarshitGadge/kafka-databricks-nasa"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-kafka-databricks-nasa-dark.svg?v=2"><img alt="kafka-databricks-nasa: 33 tests" src="assets/card-kafka-databricks-nasa-light.svg?v=2" width="49%"></picture></a>
-  <a href="https://github.com/HarshitGadge/fraud-screening"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-detecting_fradulent_job-dark.svg?v=2"><img alt="fraud screening: 77% of fraud caught reviewing the top 5%" src="assets/card-detecting_fradulent_job-light.svg?v=2" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/agentic-rag-service"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-agentic-rag-service-dark.svg?v=3"><img alt="agentic-rag-service: +5.0 nDCG@10 on SciFact" src="assets/card-agentic-rag-service-light.svg?v=3" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/capability-runtime"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-capability-runtime-dark.svg?v=3"><img alt="capability-runtime: 0 model calls per production replay" src="assets/card-capability-runtime-light.svg?v=3" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/payments-data-platform"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-payments-data-platform-dark.svg?v=3"><img alt="payments-data-platform: 102 tests" src="assets/card-payments-data-platform-light.svg?v=3" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/medicare-claims-analytics"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-medicare-claims-analytics-dark.svg?v=3"><img alt="medicare-claims-analytics: +6.7 points of next year's high-cost members found" src="assets/card-medicare-claims-analytics-light.svg?v=3" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/kafka-databricks-nasa"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-kafka-databricks-nasa-dark.svg?v=3"><img alt="kafka-databricks-nasa: 33 tests" src="assets/card-kafka-databricks-nasa-light.svg?v=3" width="49%"></picture></a>
+  <a href="https://github.com/HarshitGadge/fraud-screening"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/card-detecting_fradulent_job-dark.svg?v=3"><img alt="fraud screening: 77% of fraud caught reviewing the top 5%" src="assets/card-detecting_fradulent_job-light.svg?v=3" width="49%"></picture></a>
 </p>
 
 **Team project:** [Tatva Silicon Agri](https://github.com/hrathore1995/Agri-crop-pest-prediction-and-detection) (crop disease and pest prediction for Indian agriculture, built with one teammate). It has four tracks in one Streamlit app:
