@@ -1,4 +1,4 @@
-<a href="https://github.com/HarshitGadge/agentic-rag-service">
+<a href="https://agentic-rag-service-fxsc.onrender.com/docs">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.svg">
     <source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg">
@@ -9,6 +9,7 @@
 <p align="center">
   <a href="https://www.linkedin.com/in/harshitg-">LinkedIn</a> ·
   <a href="mailto:harshit.gadge.1805@gmail.com">harshit.gadge.1805@gmail.com</a> ·
+  <a href="#try-it-live">Try it live</a> ·
   <a href="#featured-work">Featured work</a> ·
   <a href="#how-they-work">How they work</a>
 </p>
@@ -16,6 +17,13 @@
 I'm an AI and data engineer. I've just finished an MS in Data Science at the University of Maryland (GPA 3.95). I'm an **AI Engineer Intern at Causify.AI** and work on **Prof. GP Saggese's research team at UMD**. I'm also co-inventor on an **Indian patent** for electromagnetic simulation and machine learning for non-invasive lung tumor prediction.
 
 Each of my projects comes with a number and a test that backs it up.
+
+## Try it live
+
+| | |
+|---|---|
+| **[Ask my portfolio →](https://agentic-rag-service-fxsc.onrender.com/docs)** | The RAG service from the animation above. It has indexed the design docs of the five projects below. Open `POST /query` → **Try it out** and ask something like *"How are hospital readmissions defined?"* Every answer comes with citations. It's read-only, and on a free instance the first request after a quiet spell takes about a minute. |
+| **[Medicare claims dashboard →](https://hgadge-medicare-claims.streamlit.app)** | PMPM, cost concentration, readmissions and state comparisons over 108k synthetic Medicare members, built from the dbt marts. |
 
 ## Featured work
 

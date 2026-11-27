@@ -80,9 +80,8 @@ def hero(t: Theme) -> str:
         ("assess", "broaden and retry if coverage is weak (max 2 rounds)"),
     ]
     answer = [
-        "The MERGE guards on cdc_lsn > target.cdc_lsn, so a stale event",
-        "re-applied after a newer one is ignored. LSN, not ts_ms: the",
-        "timestamp has millisecond resolution and two changes can tie.  [1]",
+        "The MERGE guards on `cdc_lsn > target.cdc_lsn`, so a stale event",
+        "re-applied after a newer one is ignored.  [5]",
     ]
 
     css = [
@@ -146,7 +145,7 @@ def hero(t: Theme) -> str:
     css.append(appear("ah", 6.4))
     css.append(f".ah{{animation:ah {CYCLE}s infinite}}")
     body.append(f'<g class="ah"><text x="{lx}" y="{y}"><tspan class="grn">&#10003; answer</tspan>'
-                f'<tspan class="muted">  extractive &#183; grounded in retrieved passages</tspan></text></g>')
+                f'<tspan class="muted">  extractive &#183; excerpt, cited to the retrieved passage</tspan></text></g>')
     y += 24
     for i, line in enumerate(answer):
         name = f"an{i}"
@@ -157,8 +156,8 @@ def hero(t: Theme) -> str:
     y += 6
     css.append(appear("ci", 8.7))
     css.append(f".ci{{animation:ci {CYCLE}s infinite}}")
-    body.append(f'<g class="ci"><text x="{lx}" y="{y}"><tspan class="acc">[1]</tspan>'
-                f'<tspan class="muted"> payments-data-platform/README.md &#183; &#8220;The problems this is built around&#8221;</tspan></text></g>')
+    body.append(f'<g class="ci"><text x="{lx}" y="{y}"><tspan class="acc">[5]</tspan>'
+                f'<tspan class="muted"> demo/corpus/payments-data-platform/README.md &#183; live at agentic-rag-service-fxsc.onrender.com</tspan></text></g>')
 
     return svg(W, H, t, css, body, "Harshit Gadge: an animated terminal asking the portfolio Q&A service a question and showing the cited answer")
 
