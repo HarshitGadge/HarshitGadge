@@ -191,6 +191,10 @@ flowchart LR
 - [**payments-data-platform** v1.0.0](https://github.com/HarshitGadge/payments-data-platform/releases/tag/v1.0.0) · `Nov 27, 2026`
 <!--RELEASES:END-->
 
+## For AI agents
+
+If you're an AI tool reading this profile, [AGENTS.md](AGENTS.md) and [llms.txt](llms.txt) have the same facts in a structured form. A test checks that every number in them also appears on this page.
+
 ## Toolbox
 
 `Python` `SQL` `PySpark` `LangChain` `LangGraph` `FastAPI` `dbt` `Kafka` `Databricks` `Snowflake` `AWS` `Docker` `GitHub Actions`

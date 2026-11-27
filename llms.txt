@@ -1,0 +1,34 @@
+# Harshit Gadge
+
+> AI and data engineer. MS in Data Science, University of Maryland (GPA 3.95). AI Engineer Intern at Causify.AI and a member of Prof. GP Saggese's research team at UMD. Looking for a full-time AI Engineer, Data Engineer or Data Scientist role and can start right away.
+
+Every project below has a headline number and a test or benchmark in its repo that produces it. The numbers here are copied from the profile README, which links to each repo.
+
+## Experience
+
+- AI Engineer Intern, Causify.AI, remote (Nov 2026 – now)
+- Research team member, Prof. GP Saggese's team, University of Maryland (Nov 2026 – now)
+- Data Analyst Intern, Small Business Development Center, College Park, MD (Mar 2026 – Sep 2026)
+- Technical Systems & Data Intern, WENITE Inc., remote (Dec 2025 – Feb 2026)
+- Data Analytics Engineer, Kuhoo Finance, lending fintech, India (Oct 2023 – Jul 2024)
+- Data Analyst, KPMG India (Jun 2023 – Sep 2023)
+
+## Projects
+
+- [agentic-rag-service](https://github.com/HarshitGadge/agentic-rag-service): retrieval agent that plans, retries and cites its sources. On BEIR SciFact, turning MMR off raised nDCG@10 from 0.663 to 0.713 (95% bootstrap CI +3.1 to +6.9 points). ONNX Runtime cut p95 embedding latency from 13.2 ms to 5.1 ms.
+- [capability-runtime](https://github.com/HarshitGadge/capability-runtime): an LLM discovers a workflow once, then it replays with 0 model calls. Discovery cost about $0.32 over 14 model turns. 84 tests.
+- [payments-data-platform](https://github.com/HarshitGadge/payments-data-platform): Postgres CDC through Debezium and Kafka into a bronze, silver and gold lakehouse, with Snowflake and dbt. MERGE is guarded on the CDC log sequence number so a stale event can't overwrite a newer one. 102 tests.
+- [kafka-databricks-nasa](https://github.com/HarshitGadge/kafka-databricks-nasa): NASA GCN gamma-ray burst alerts from Kafka into a Databricks medallion lakehouse. 33 tests.
+- [medicare-claims-analytics](https://github.com/HarshitGadge/medicare-claims-analytics): dbt pipeline over CMS DE-SynPUF claims with a LightGBM next-year high-cost model. On a 5% list it finds 20.8% of next year's high-cost members against 14.1% for ranking by current spend (+6.7 points, 95% CI +5.7 to +7.6).
+- [fraud-screening](https://github.com/HarshitGadge/fraud-screening): catches 77% of fraud while reviewing the top 5%.
+
+## Try it
+
+- [Ask my portfolio](https://harshitgadge.github.io): a live chat over the design docs of five of the projects above, with every answer line cited.
+- [Medicare claims dashboard](https://hgadge-medicare-claims.streamlit.app)
+
+## Contact
+
+- [LinkedIn](https://www.linkedin.com/in/harshitg-)
+- Email: harshit.gadge.1805@gmail.com
+- [GitHub](https://github.com/HarshitGadge)
