@@ -1,4 +1,4 @@
-<a href="https://agentic-rag-service-fxsc.onrender.com/docs">
+<a href="https://harshitgadge.github.io">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.svg?v=2">
     <source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg?v=2">
@@ -22,7 +22,7 @@ Each of my projects comes with a number and a test that backs it up.
 
 | Demo | What you'll see |
 |---|---|
-| **[Ask my portfolio →](https://agentic-rag-service-fxsc.onrender.com/docs)** | The RAG service from the animation above. It has indexed the design docs of the five projects below. Open `POST /query` → **Try it out** and ask something like *"How are hospital readmissions defined?"* Every answer comes with citations. It's read-only, and on a free instance the first request after a quiet spell takes about a minute. |
+| **[Ask my portfolio →](https://harshitgadge.github.io)** | A chat page on the RAG service from the animation above, which has indexed the design docs of the five projects below. Each glowing dot is one indexed passage; ask a question and watch the passages it uses light up, with every answer line cited to its source. It's read-only, and on a free instance the first question after a quiet spell takes about a minute. ([raw API](https://agentic-rag-service-fxsc.onrender.com/docs)) |
 | **[Medicare claims dashboard →](https://hgadge-medicare-claims.streamlit.app)** | PMPM, cost concentration, readmissions and state comparisons over 108k synthetic Medicare members, built from the dbt marts. |
 
 ## Featured work
