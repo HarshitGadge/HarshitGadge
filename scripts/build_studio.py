@@ -4,11 +4,14 @@ Silent by design: GitHub strips scripts and audio from README images, so all
 motion is CSS keyframes inside the SVG, and every asset is drawn once per
 GitHub colour scheme.
 
-Hero: a spectrum analyzer. Its bars dance, settle at the tops of the letters,
-then hand over to the same LED grid spelling the name. The pattern loops, and
-visitors who ask for reduced motion see the name straight away.
+Hero: a DJ deck's "now playing" screen. The track is my name, the artist line
+is the role, a jog wheel turns and a waveform scrolls under a fixed playhead.
+The name is there from the first frame, and visitors who ask for reduced
+motion get the same screen standing still.
 
-    python scripts/build_studio.py     # writes assets/studio-*.svg
+The colour themes here are shared by the other generators.
+
+    python scripts/build_studio.py     # writes assets/studio-hero-*.svg
 """
 from __future__ import annotations
 
@@ -20,21 +23,6 @@ from pathlib import Path
 ASSETS = Path(__file__).resolve().parent.parent / "assets"
 SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif"
 MONO = "ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace"
-
-# 5x7 LED glyphs, top row first
-GLYPHS = {
-    "A": ["01110", "10001", "10001", "11111", "10001", "10001", "10001"],
-    "D": ["11110", "10001", "10001", "10001", "10001", "10001", "11110"],
-    "E": ["11111", "10000", "10000", "11110", "10000", "10000", "11111"],
-    "G": ["01110", "10001", "10000", "10111", "10001", "10001", "01111"],
-    "H": ["10001", "10001", "10001", "11111", "10001", "10001", "10001"],
-    "I": ["11111", "00100", "00100", "00100", "00100", "00100", "11111"],
-    "R": ["11110", "10001", "10001", "11110", "10100", "10010", "10001"],
-    "S": ["01111", "10000", "10000", "01110", "00001", "00001", "11110"],
-    "T": ["11111", "00100", "00100", "00100", "00100", "00100", "00100"],
-    " ": ["00000"] * 7,
-}
-
 
 @dataclass(frozen=True)
 class Theme:
@@ -52,147 +40,135 @@ DARK = Theme("dark", "#0d1117", "#161b22", "#e6edf3", "#8b949e", "#2dd4bf", "#a3
 LIGHT = Theme("light", "#ffffff", "#eaeef2", "#1f2328", "#59636e", "#0f766e", "#8250df", "#bf3989")
 
 
+TITLE = "Harshit Gadge"
+ARTIST = "AI Engineer"
+
+
 @dataclass(frozen=True)
 class Layout:
     name: str
-    lines: tuple[str, ...]      # the name, one string per LED row block
-    rows: int                   # grid height in LEDs
-    first_row: int              # grid row where the first line of letters starts
-    line_gap: int               # empty LED rows between lines
     width: int
-    pad_x: int
-    top: int
-    pitch_x: int = 14
-    pitch_y: int = 11
-    cell_w: int = 11
-    cell_h: int = 8
-    subtitle: tuple[str, ...] = ()
+    height: int
+    pad: int            # screen inset from the image edge
+    wheel: tuple[int, int, int]   # jog wheel centre x, centre y, radius
+    text_x: int
+    title_size: int
+    title_y: int
+    artist_y: int
+    tagline: tuple[str, ...]      # lines under the artist
+    wave: tuple[int, int]         # waveform top and height
 
 
-WIDE = Layout("wide", ("HARSHIT GADGE",), rows=15, first_row=4, line_gap=0, width=1200, pad_x=62, top=34,
-              subtitle=("AI &amp; data engineer · RAG, agents and data pipelines · open to full-time roles",))
-NARROW = Layout("phone", ("HARSHIT", "GADGE"), rows=21, first_row=3, line_gap=2, width=640, pad_x=33, top=34,
-                subtitle=("AI &amp; data engineer", "RAG, agents and data pipelines", "open to full-time roles"))
+WIDE = Layout("wide", 1200, 300, 24, (122, 132, 62), 216, 54, 124, 162,
+              ("RAG, agents and data pipelines · open to full-time roles",), (212, 56))
+NARROW = Layout("phone", 640, 300, 16, (80, 122, 46), 146, 34, 108, 138,
+                ("RAG, agents and data pipelines", "open to full-time roles"), (210, 58))
+
+PITCH = 4               # px between waveform bars
+PERIOD = 360            # bars before the waveform repeats, so the scroll loops cleanly
+SCROLL = 30.0           # seconds for one period to pass the playhead
 
 
-def letter_grid(L: Layout) -> list[list[bool]]:
-    """rows x cols booleans: which LEDs spell the name. Each line is centred."""
-    cols = max(len(line) * 6 - 1 for line in L.lines)
-    grid = [[False] * cols for _ in range(L.rows)]
-    for n, line in enumerate(L.lines):
-        width = len(line) * 6 - 1
-        x0 = (cols - width) // 2
-        y0 = L.first_row + n * (7 + L.line_gap)
-        for i, ch in enumerate(line):
-            for r, bits in enumerate(GLYPHS[ch]):
-                for c, bit in enumerate(bits):
-                    if bit == "1":
-                        grid[y0 + r][x0 + i * 6 + c] = True
-    return grid
-
-
-def settle_heights(grid: list[list[bool]]) -> list[int]:
-    """Where each bar comes to rest: the top of its column's highest letter LED (0 for an empty column)."""
-    rows = len(grid)
+def waveform() -> list[float]:
+    """Bar heights from 0 to 1 for one period of a made-up track: verses, builds and drops."""
+    rng = random.Random("now-playing")
     out = []
-    for c in range(len(grid[0])):
-        lit = [r for r in range(rows) if grid[r][c]]
-        out.append(rows - lit[0] if lit else 0)
+    for i in range(PERIOD):
+        phase = i / PERIOD
+        # four sections a period; each builds up and then drops back
+        section = (phase * 4) % 1
+        energy = 0.35 + 0.55 * section ** 1.6
+        kick = 1.0 if i % 8 == 0 else 0.0
+        out.append(max(0.08, min(1.0, energy * rng.uniform(0.55, 1.0) + 0.2 * kick)))
     return out
 
 
-CYCLE = 14.0           # seconds per loop
-DANCE = 3.4            # bars move for this long, then settle
-STEP = 0.2             # seconds per bar frame
-FADE = (3.6, 4.2)      # bars hand over to the name
-HOLD_END = (13.2, 13.7)
-
-
-def pct(s: float) -> str:
-    return f"{s / CYCLE * 100:.3f}".rstrip("0").rstrip(".") + "%"
-
-
-def bar_frames(col: int, cols: int, rows: int, final: int, rng: random.Random) -> list[int]:
-    """Bar heights (in LEDs) for each frame of the dance, easing onto `final`."""
-    frames = int(DANCE / STEP)
-    bass = 1.0 - 0.45 * col / max(cols - 1, 1)          # left side a bit louder, like low frequencies
-    out = []
-    for k in range(frames):
-        wild = rng.randint(2, rows) * bass
-        blend = max(0.0, (k - frames * 0.55) / (frames * 0.45))   # last ~45% of frames drift to the letters
-        out.append(max(0, min(rows, round(wild * (1 - blend) + final * blend))))
-    out[-1] = final
-    return out
-
-
-def row_colour(t: Theme, r: int, rows: int) -> str:
-    f = 1 - r / (rows - 1)          # 0 at the bottom row, 1 at the top
-    return t.low if f < 0.38 else t.mid if f < 0.72 else t.high
+def bar_colour(t: Theme, h: float) -> str:
+    return t.low if h < 0.5 else t.mid if h < 0.8 else t.high
 
 
 def hero(t: Theme, L: Layout) -> str:
-    rng = random.Random(f"{L.name}-spectrum")
-    grid = letter_grid(L)
-    rows, cols = L.rows, len(grid[0])
-    gx = L.pad_x + (L.width - 2 * L.pad_x - (cols * L.pitch_x - (L.pitch_x - L.cell_w))) / 2
-    gy = L.top
-    floor = gy + rows * L.pitch_y
-    height = floor + 26 + 26 * len(L.subtitle) + 10
-    finals = settle_heights(grid)
+    W, H, P = L.width, L.height, L.pad
+    cx, cy, r = L.wheel
+    wy, wh = L.wave
+    wx0, wx1 = P + 22, W - P - 22
+    mid_y = wy + wh / 2
+    play_x = round((wx0 + wx1) / 2)
+    period_px = PERIOD * PITCH
 
     css = [
         f"text{{font-family:{SANS};fill:{t.text}}}",
-        f".sub{{fill:{t.muted};font-size:{15 if L.name == 'wide' else 15}px}}",
-        f"@keyframes bars{{0%,{pct(FADE[0])}{{opacity:1}}{pct(FADE[1])},{pct(HOLD_END[1])}{{opacity:0}}100%{{opacity:1}}}}",
-        f"@keyframes name{{0%,{pct(FADE[0])}{{opacity:0}}{pct(FADE[1])},{pct(HOLD_END[0])}{{opacity:1}}{pct(HOLD_END[1])},100%{{opacity:0}}}}",
-        f".bars{{animation:bars {CYCLE}s linear infinite}}",
-        f".name{{opacity:0;animation:name {CYCLE}s linear infinite}}",
-        "@media (prefers-reduced-motion:reduce){.bars{display:none}.name{opacity:1;animation:none}.col{animation:none!important}}",
+        f".mono{{font-family:{MONO}}}",
+        f".muted{{fill:{t.muted}}}",
+        f"@keyframes scroll{{to{{transform:translateX(-{period_px}px)}}}}",
+        f".wave{{animation:scroll {SCROLL}s linear infinite}}",
+        "@keyframes turn{to{transform:rotate(360deg)}}",
+        f".wheel{{transform-origin:{cx}px {cy}px;animation:turn 1.8s linear infinite}}",
+        "@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}",
+        ".live{animation:blink 1.6s ease-in-out infinite}",
+        "@media (prefers-reduced-motion:reduce){.wave,.wheel,.live{animation:none}}",
     ]
-    body: list[str] = []
-    cell = lambda x, y, fill: f'<rect x="{x:.1f}" y="{y}" width="{L.cell_w}" height="{L.cell_h}" rx="1.5" fill="{fill}"/>'
+    b: list[str] = [f'<rect width="{W}" height="{H}" fill="{t.bg}"/>',
+                    f'<rect x="{P}" y="{P - 8}" width="{W - 2 * P}" height="{H - 2 * P + 8}" rx="16" fill="{t.off}" stroke="{t.muted}" stroke-opacity=".25"/>']
 
-    # one lit column, drawn once and reused for every bar
-    body.append('<defs>'
-                f'<pattern id="off" x="{gx:.1f}" y="{gy}" width="{L.pitch_x}" height="{L.pitch_y}" patternUnits="userSpaceOnUse">'
-                f'<rect width="{L.cell_w}" height="{L.cell_h}" rx="1.5" fill="{t.off}"/></pattern>'
-                '<g id="lit">' + "".join(cell(0, gy + r * L.pitch_y, row_colour(t, r, rows)) for r in range(rows)) + '</g>'
-                '</defs>')
-    # unlit LEDs
-    body.append(f'<rect x="{gx:.1f}" y="{gy}" width="{cols * L.pitch_x:.1f}" height="{rows * L.pitch_y}" fill="url(#off)"/>')
+    # status line
+    sy = P + 24
+    b.append(f'<circle class="live" cx="{P + 28}" cy="{sy - 4}" r="4.5" fill="{t.high}"/>')
+    b.append(f'<text x="{P + 42}" y="{sy}" class="mono" style="font-size:12px;font-weight:700;letter-spacing:3px">NOW PLAYING</text>')
+    b.append(f'<text x="{W - P - 22}" y="{sy}" text-anchor="end" class="mono muted" style="font-size:12px;letter-spacing:3px">DECK A</text>')
 
-    # dancing bars: a full lit column slides up and down; the floor below hides the rest
-    bars = []
-    for c in range(cols):
-        frames = bar_frames(c, cols, rows, finals[c], rng)
-        kf = []
-        for k, h in enumerate(frames):
-            kf.append(f"{pct(k * STEP)}{{transform:translateY({(rows - h) * L.pitch_y}px)}}")
-        kf.append(f"{pct(DANCE)},100%{{transform:translateY({(rows - finals[c]) * L.pitch_y}px)}}")
-        css.append(f"@keyframes c{c}{{{''.join(kf)}}}")
-        css.append(f".c{c}{{animation:c{c} {CYCLE}s step-end infinite}}")
-        bars.append(f'<g transform="translate({gx + c * L.pitch_x:.1f} 0)"><use href="#lit" class="col c{c}"/></g>')
-    body.append('<g class="bars">' + "".join(bars) + '</g>')
-    body.append(f'<rect x="0" y="{floor - (L.pitch_y - L.cell_h)}" width="{L.width}" height="{height - floor + L.pitch_y}" fill="{t.bg}"/>')
+    # jog wheel: a platter with grooves and a marker that turns
+    grooves = "".join(f'<circle cx="{cx}" cy="{cy}" r="{rr}" fill="none" stroke="{t.muted}" stroke-opacity=".18"/>'
+                      for rr in range(int(r * .42), r - 3, 5))
+    b.append(f'<circle cx="{cx}" cy="{cy}" r="{r + 5}" fill="{t.bg}" stroke="{t.muted}" stroke-opacity=".35"/>')
+    b.append(f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="#111318"/>{grooves}')
+    b.append(f'<g class="wheel"><rect x="{cx - 2}" y="{cy - r + 3}" width="4" height="{r * .34:.0f}" rx="2" fill="{t.high}"/>'
+             f'<circle cx="{cx}" cy="{cy}" r="{r * .3:.0f}" fill="{t.mid}"/>'
+             f'<circle cx="{cx + r * .17:.0f}" cy="{cy - r * .1:.0f}" r="{max(2, r * .05):.0f}" fill="#0b0d11" opacity=".55"/></g>')
+    b.append(f'<circle cx="{cx}" cy="{cy}" r="3" fill="#d7dde5"/>')
 
-    # the name, on the same grid
-    body.append('<g class="name">' + "".join(cell(gx + c * L.pitch_x, gy + r * L.pitch_y, row_colour(t, r, rows))
-                                             for r in range(rows) for c in range(cols) if grid[r][c]) + '</g>')
+    # the track: my name, the role as the artist, then the tagline
+    tx = L.text_x
+    b.append(f'<text x="{tx}" y="{L.title_y}" style="font-size:{L.title_size}px;font-weight:800;letter-spacing:-.5px">{escape(TITLE)}</text>')
+    b.append(f'<text x="{tx}" y="{L.artist_y}" style="font-size:{round(L.title_size * .4)}px;font-weight:700;fill:{t.mid}">{escape(ARTIST)}</text>')
+    for i, line in enumerate(L.tagline):
+        b.append(f'<text x="{tx}" y="{L.artist_y + 26 + i * 21}" class="muted" style="font-size:{15 if L.name == "wide" else 13.5}px">{escape(line)}</text>')
 
-    for i, line in enumerate(L.subtitle):
-        body.append(f'<text x="{L.width / 2}" y="{floor + 26 + i * 26}" text-anchor="middle" class="sub">{line}</text>')
+    # waveform, scrolling under a fixed playhead; the part still to come is dimmed
+    heights = waveform()
+    visible = (wx1 - wx0) // PITCH + 2
+    paths = {t.low: [], t.mid: [], t.high: []}
+    for i in range(PERIOD + visible):
+        h = heights[i % PERIOD]
+        half = max(1.0, h * (wh / 2 - 4))
+        paths[bar_colour(t, h)].append(f"M{wx0 + i * PITCH} {mid_y - half:.1f}v{2 * half:.1f}")
+    b.append(f'<clipPath id="win"><rect x="{wx0}" y="{wy}" width="{wx1 - wx0}" height="{wh}" rx="8"/></clipPath>')
+    b.append(f'<rect x="{wx0}" y="{wy}" width="{wx1 - wx0}" height="{wh}" rx="8" fill="{t.bg}"/>')
+    b.append(f'<g clip-path="url(#win)"><g class="wave">' +
+             "".join(f'<path d="{"".join(d)}" stroke="{c}" stroke-width="2.4" stroke-linecap="round"/>' for c, d in paths.items()) +
+             f'</g><rect x="{play_x}" y="{wy}" width="{wx1 - play_x}" height="{wh}" fill="{t.bg}" opacity=".5"/></g>')
+    b.append(f'<line x1="{play_x}" y1="{wy - 6}" x2="{play_x}" y2="{wy + wh + 6}" stroke="{t.text}" stroke-width="2"/>'
+             f'<polygon points="{play_x - 6},{wy - 10} {play_x + 6},{wy - 10} {play_x},{wy - 3}" fill="{t.text}"/>')
 
-    label = "Harshit Gadge: spectrum analyzer bars settle into my name. AI and data engineer, open to full-time roles."
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{L.width}" height="{height}" viewBox="0 0 {L.width} {height}" '
+    label = (f"Now playing: {TITLE}, {ARTIST}. {' '.join(L.tagline).replace(' · ', ', ')}. "
+             "A DJ deck screen with a turning jog wheel and a waveform scrolling under the playhead.")
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
             f'role="img" aria-label="{escape(label)}"><title>{escape(label)}</title>'
-            f'<style>{"".join(css)}</style><rect width="100%" height="100%" fill="{t.bg}"/>' + "".join(body) + "</svg>\n")
+            f'<style>{"".join(css)}</style>' + "".join(b) + "</svg>\n")
+
+
+def render() -> dict[str, str]:
+    out = {}
+    for t in (DARK, LIGHT):
+        out[f"studio-hero-{t.name}.svg"] = hero(t, WIDE)
+        out[f"studio-hero-phone-{t.name}.svg"] = hero(t, NARROW)
+    return out
 
 
 def main() -> None:
     ASSETS.mkdir(exist_ok=True)
-    for t in (DARK, LIGHT):
-        (ASSETS / f"studio-hero-{t.name}.svg").write_text(hero(t, WIDE), encoding="utf-8")
-        (ASSETS / f"studio-hero-phone-{t.name}.svg").write_text(hero(t, NARROW), encoding="utf-8")
+    for name, text in render().items():
+        (ASSETS / name).write_text(text, encoding="utf-8")
     print("wrote studio hero SVGs")
 
 
