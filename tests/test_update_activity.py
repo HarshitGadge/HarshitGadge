@@ -70,3 +70,33 @@ def test_releases_newest_first_skipping_forks_and_drafts():
         "- [**ragbench** v1.0.0](https://github.com/HarshitGadge/ragbench/releases/tag/v1.0.0) · `Dec 20, 2026`",
         "- [**agentic-rag-service** v0.3.0](https://github.com/HarshitGadge/agentic-rag-service/releases/tag/v0.3.0) · `Dec 01, 2026`",
     ]
+
+
+NOW = ua.datetime(2026, 11, 27, tzinfo=ua.timezone.utc)
+REPOS_URL = "https://api.github.com/users/HarshitGadge/repos?per_page=100&type=owner"
+
+
+def test_stats_count_merged_prs_repos_and_recent_releases():
+    q = "author:HarshitGadge+type:pr+is:merged+merged:>=2026-10-28"
+    f = fake({
+        f"https://api.github.com/search/issues?q={q}&per_page=100": {"total_count": 3, "items": [
+            {"repository_url": "https://api.github.com/repos/HarshitGadge/a"},
+            {"repository_url": "https://api.github.com/repos/HarshitGadge/a"},
+            {"repository_url": "https://api.github.com/repos/gpsaggese/helpers"}]},
+        REPOS_URL: [{"full_name": "HarshitGadge/a", "name": "a"},
+                    {"full_name": "HarshitGadge/old", "name": "old", "fork": True}],
+        "https://api.github.com/repos/HarshitGadge/a/releases?per_page=100": [
+            {"published_at": "2026-11-20T00:00:00Z"},
+            {"published_at": "2026-11-21T00:00:00Z", "draft": True},
+            {"published_at": "2026-09-01T00:00:00Z"}],
+    })
+    assert ua.recent_stats(NOW, f) == {"prs": 3, "repos": 2, "releases": 1}
+
+
+def test_stats_sentence_wording():
+    assert ua.render_stats({"prs": 3, "repos": 2, "releases": 1}, NOW) == (
+        "In the last 30 days I merged **3** pull requests across **2** repositories and published **1** release. "
+        "<sub>Counted from the GitHub API on Nov 27, 2026.</sub>\n")
+    assert ua.render_stats({"prs": 1, "repos": 1, "releases": 0}, NOW).startswith(
+        "In the last 30 days I merged **1** pull request across **1** repository.")
+    assert ua.render_stats({"prs": 0, "repos": 0, "releases": 4}, NOW) == ""
