@@ -5,6 +5,7 @@ on:
     - cron: "17 11 * * *"   # daily, 06:17 US Eastern
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - scripts/update_activity.py
       - scripts/update_ledger.py
