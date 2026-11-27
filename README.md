@@ -211,16 +211,16 @@ Short write-ups on decisions in these projects, each backed by a run in its repo
 ## Latest work
 
 <!--STATS:START-->
-In the last 30 days I merged **40** pull requests across **6** repositories and published **8** releases. <sub>Counted from the GitHub API on Nov 27, 2026.</sub>
+In the last 30 days I merged **64** pull requests across **7** repositories and published **9** releases. <sub>Counted from the GitHub API on Nov 27, 2026.</sub>
 <!--STATS:END-->
 
 <!--ACTIVITY:START-->
-- `Nov 27` merged [Booth: skip table and diagram scraps in answers](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/9) in **HarshitGadge.github.io**
-- `Nov 27` released [RAGBench 1.1.0](https://github.com/HarshitGadge/ragbench/releases/tag/v1.1.0) of **ragbench**
-- `Nov 27` merged [Booth: clear old timings on a record switch, and skip table scraps in answers](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/8) in **HarshitGadge.github.io**
-- `Nov 27` merged [Add a CI gate: ragbench gate and a GitHub Action](https://github.com/HarshitGadge/ragbench/pull/7) in **ragbench**
-- `Nov 27` merged [Make the booth the home page](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/7) in **HarshitGadge.github.io**
-- `Nov 27` merged [Booth: ask each record a question about its project](https://github.com/HarshitGadge/HarshitGadge.github.io/pull/6) in **HarshitGadge.github.io**
+- `Nov 27` merged [Score the agent with a free OpenRouter model](https://github.com/HarshitGadge/grounded-policy-assistant/pull/8) in **grounded-policy-assistant**
+- `Nov 27` merged [Score recall@5 with RAGBench](https://github.com/HarshitGadge/grounded-policy-assistant/pull/7) in **grounded-policy-assistant**
+- `Nov 27` merged [Show whether the OpenRouter model used structured outputs](https://github.com/HarshitGadge/grounded-policy-assistant/pull/6) in **grounded-policy-assistant**
+- `Nov 27` merged [Add --recall-k to report recall at any cutoffs](https://github.com/HarshitGadge/ragbench/pull/16) in **ragbench**
+- `Nov 27` merged [Evaluate retrieval and the agent with RAGBench](https://github.com/HarshitGadge/grounded-policy-assistant/pull/5) in **grounded-policy-assistant**
+- `Nov 27` merged [Add an OpenRouter answerer](https://github.com/HarshitGadge/grounded-policy-assistant/pull/4) in **grounded-policy-assistant**
 <!--ACTIVITY:END-->
 
 <sub>A GitHub Action refreshes this list every morning from my public activity.</sub>
@@ -228,7 +228,7 @@ In the last 30 days I merged **40** pull requests across **6** repositories and 
 <!--RELEASES:START-->
 ## Releases
 
-- [**ragbench** v1.1.0](https://github.com/HarshitGadge/ragbench/releases/tag/v1.1.0) · `Nov 27, 2026`
+- [**ragbench** v1.1.1](https://github.com/HarshitGadge/ragbench/releases/tag/v1.1.1) · `Nov 27, 2026`
 - [**fraud-screening** v1.0.0](https://github.com/HarshitGadge/fraud-screening/releases/tag/v1.0.0) · `Nov 27, 2026`
 - [**medicare-claims-analytics** v1.0.0](https://github.com/HarshitGadge/medicare-claims-analytics/releases/tag/v1.0.0) · `Nov 27, 2026`
 - [**kafka-databricks-nasa** v1.0.0](https://github.com/HarshitGadge/kafka-databricks-nasa/releases/tag/v1.0.0) · `Nov 27, 2026`
@@ -242,8 +242,9 @@ Evaluations first, then the newest CI run of each project. A GitHub Action rebui
 | Project | Run | Result | When |
 |---|---|---|---|
 | **agentic-rag-service** | BEIR SciFact retrieval eval | nDCG@10 **0.713**, p95 27.9 ms over 300 queries | [`Sep 28, 2026`](https://github.com/HarshitGadge/agentic-rag-service/blob/d9ce04a2c843cb3648f6f19f6e84bc800de06d28/eval/results/scifact.json) |
-| **HarshitGadge.github.io** | CI: pages build and deployment on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/HarshitGadge.github.io/actions/runs/45941448014) |
-| **ragbench** | CI: CI on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/ragbench/actions/runs/45940850902) |
+| **grounded-policy-assistant** | CI: CI on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/grounded-policy-assistant/actions/runs/46053927575) |
+| **ragbench** | CI: CI on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/ragbench/actions/runs/46042176784) |
+| **HarshitGadge.github.io** | CI: pages build and deployment on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/HarshitGadge.github.io/actions/runs/46034877861) |
 | **agentic-rag-service** | CI: tests on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/agentic-rag-service/actions/runs/45939961246) |
 | **medicare-claims-analytics** | CI: ci on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/medicare-claims-analytics/actions/runs/45925887322) |
 | **capability-runtime** | CI: tests on `main` | passed | [`Sep 27, 2026`](https://github.com/HarshitGadge/capability-runtime/actions/runs/36347628246) |
