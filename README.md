@@ -14,7 +14,8 @@
   <a href="#experience">Experience</a> ·
   <a href="#try-it-live">Try it live</a> ·
   <a href="#featured-work">Featured work</a> ·
-  <a href="#how-they-work">How they work</a>
+  <a href="#how-they-work">How they work</a> ·
+  <a href="#notes">Notes</a>
 </p>
 
 I'm an AI and data engineer. I've just finished an MS in Data Science at the University of Maryland (GPA 3.95). I'm an **AI Engineer Intern at Causify.AI** and work on **Prof. GP Saggese's research team at UMD**. I'm also co-inventor on an **Indian patent** for electromagnetic simulation and machine learning for non-invasive lung tumor prediction.
@@ -175,6 +176,14 @@ flowchart LR
 - **Hospital stays are built properly.** Overlapping claims, same-day admissions and next-day transfers are merged before readmissions are counted.
 
 </details>
+
+## Notes
+
+Short write-ups on decisions in these projects, each backed by a run in its repo.
+
+- [Why MMR is off by default in my RAG service](notes/mmr-off-by-default.md): the evaluation beat my instinct.
+- [Why the payments MERGE trusts the LSN, not the timestamp](notes/lsn-not-timestamp.md): two changes can share a millisecond.
+- [Beating the obvious baseline for high-cost Medicare members](notes/beat-the-obvious-baseline.md): 20.8% against 14.1% on a 5% list.
 
 ## Latest work
 
