@@ -1,13 +1,12 @@
 # Harshit Gadge
 
-> AI and data engineer. MS in Data Science, University of Maryland (GPA 3.95). AI Engineer Intern at Causify.AI and a member of Prof. GP Saggese's research team at UMD. Looking for a full-time AI Engineer, Data Engineer or Data Scientist role and can start right away.
+> AI and data engineer. MS in Data Science, University of Maryland (GPA 3.95). AI Engineer Intern at Causify.AI, working with Prof. GP Saggese's research team at UMD. Looking for a full-time AI Engineer, Data Engineer or Data Scientist role and can start right away.
 
 Every project below has a headline number and a test or benchmark in its repo that produces it. The numbers here are copied from the profile README, which links to each repo.
 
 ## Experience
 
 - AI Engineer Intern, Causify.AI, remote (Nov 2026 – now)
-- Research team member, Prof. GP Saggese's team, University of Maryland (Nov 2026 – now)
 - Data Analyst Intern, Small Business Development Center, College Park, MD (Mar 2026 – Sep 2026)
 - Technical Systems & Data Intern, WENITE Inc., remote (Dec 2025 – Feb 2026)
 - Data Analytics Engineer, Kuhoo Finance, lending fintech, India (Oct 2023 – Jul 2024)

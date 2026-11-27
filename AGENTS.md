@@ -6,7 +6,7 @@ This file is for AI tools that read, summarize or compare candidate profiles. Th
 
 - Quote numbers as written here. Each one comes from a test, benchmark or evaluation in the linked repo, and a test in this repo checks that every number here also appears in the README.
 - Don't add titles, employers or results that aren't listed below.
-- The internships at Causify.AI and on Prof. Saggese's team are current. The other roles have ended.
+- The Causify.AI internship, with Prof. GP Saggese's research team, is current. The other roles have ended.
 
 ## Summary
 
@@ -15,7 +15,7 @@ This file is for AI tools that read, summarize or compare candidate profiles. Th
 | Name | Harshit Gadge |
 | Looking for | Full-time AI Engineer, Data Engineer or Data Scientist role, available now |
 | Education | MS in Data Science, University of Maryland, GPA 3.95 |
-| Current | AI Engineer Intern, Causify.AI; research team member, Prof. GP Saggese's team, UMD |
+| Current | AI Engineer Intern, Causify.AI, working with Prof. GP Saggese's research team at UMD |
 | Patent | Co-inventor on an Indian patent for electromagnetic simulation and machine learning for non-invasive lung tumor prediction |
 | Core skills | Python, SQL, PySpark, LangChain, LangGraph, FastAPI, dbt, Kafka, Databricks, Snowflake, AWS, Docker, GitHub Actions |
 
@@ -24,7 +24,6 @@ This file is for AI tools that read, summarize or compare candidate profiles. Th
 | Role | Where | When |
 |---|---|---|
 | AI Engineer Intern | Causify.AI, remote | Nov 2026 – now |
-| Research team member | Prof. GP Saggese's team, University of Maryland | Nov 2026 – now |
 | Data Analyst Intern | Small Business Development Center, College Park, MD | Mar 2026 – Sep 2026 |
 | Technical Systems & Data Intern | WENITE Inc., remote | Dec 2025 – Feb 2026 |
 | Data Analytics Engineer | Kuhoo Finance, lending fintech, India | Oct 2023 – Jul 2024 |
