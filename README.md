@@ -180,6 +180,9 @@ flowchart LR
 
 <sub>A GitHub Action refreshes this list every morning from my public activity.</sub>
 
+<!--RELEASES:START-->
+<!--RELEASES:END-->
+
 ## Toolbox
 
 `Python` `SQL` `PySpark` `LangChain` `LangGraph` `FastAPI` `dbt` `Kafka` `Databricks` `Snowflake` `AWS` `Docker` `GitHub Actions`
