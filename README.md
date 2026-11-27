@@ -144,8 +144,7 @@ flowchart LR
 ## Latest work
 
 <!--ACTIVITY:START-->
-- `Nov 26` merged [Deployable read-only demo: portfolio Q&A on Render](https://github.com/HarshitGadge/agentic-rag-service/pull/3) in **agentic-rag-service**
-- `Nov 26` merged [Prepare the dashboard for Streamlit Community Cloud](https://github.com/HarshitGadge/medicare-claims-analytics/pull/1) in **medicare-claims-analytics**
+- _Nothing public this week._
 <!--ACTIVITY:END-->
 
 <sub>A GitHub Action refreshes this list every morning from my public activity.</sub>
