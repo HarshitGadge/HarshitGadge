@@ -24,7 +24,7 @@ def test_every_featured_project_has_a_sleeve_with_its_own_number():
 
 
 def test_running_order_matches_the_readme_and_numbers_each_record_once():
-    linked = re.findall(r'href="https://harshitgadge\.github\.io/booth/#([\w-]+)"', README)
+    linked = re.findall(r'href="https://harshitgadge\.github\.io/#([\w-]+)"', README)
     assert linked == bb.ORDER
     for i, slug in enumerate(bb.ORDER):
         svg = bb.render()[f"sleeve-{slug}-dark.svg"]

@@ -2,7 +2,7 @@
 
 Each featured project is a record: a sleeve with its own pattern, the disc
 sliding out of it, and the headline number on the liner. A sleeve links to the
-same record on the booth page (https://harshitgadge.github.io/booth/), where
+same record on the booth, the home page of https://harshitgadge.github.io/, where
 the full liner notes live.
 
 The facts come from CARDS in build_assets.py, so the sleeves, the old cards and
@@ -18,7 +18,7 @@ from pathlib import Path
 
 from build_assets import ASSETS, CARDS, DARK, LIGHT, MONO, SANS, Card, Theme
 
-BOOTH = "https://harshitgadge.github.io/booth/"
+BOOTH = "https://harshitgadge.github.io/"
 W, H = 460, 200
 
 # One colour and one pattern per record, the same ones the booth page uses.

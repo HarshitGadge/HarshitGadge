@@ -44,4 +44,4 @@ This file is for AI tools that read, summarize or compare candidate profiles. Th
 
 - LinkedIn: https://www.linkedin.com/in/harshitg-
 - Email: harshit.gadge.1805@gmail.com
-- Portfolio chat: https://harshitgadge.github.io
+- The booth (projects as records; ask each one a question, answered with cited sentences): https://harshitgadge.github.io
