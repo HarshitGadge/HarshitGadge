@@ -203,6 +203,20 @@ In the last 30 days I merged **14** pull requests across **5** repositories and 
 <!--RELEASES:END-->
 
 <!--LEDGER:START-->
+## Latest runs
+
+Evaluations first, then the newest CI run of each project. A GitHub Action rebuilds this table every morning.
+
+| Project | Run | Result | When |
+|---|---|---|---|
+| **agentic-rag-service** | BEIR SciFact retrieval eval | nDCG@10 **0.713**, p95 27.9 ms over 300 queries | [`Sep 28, 2026`](https://github.com/HarshitGadge/agentic-rag-service/blob/d9ce04a2c843cb3648f6f19f6e84bc800de06d28/eval/results/scifact.json) |
+| **ragbench** | CI: CI on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/ragbench/actions/runs/45931756226) |
+| **HarshitGadge.github.io** | CI: pages build and deployment on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/HarshitGadge.github.io/actions/runs/45929672844) |
+| **agentic-rag-service** | CI: tests on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/agentic-rag-service/actions/runs/45927621820) |
+| **medicare-claims-analytics** | CI: ci on `main` | passed | [`Nov 27, 2026`](https://github.com/HarshitGadge/medicare-claims-analytics/actions/runs/45925887322) |
+| **capability-runtime** | CI: tests on `main` | passed | [`Sep 27, 2026`](https://github.com/HarshitGadge/capability-runtime/actions/runs/36347628246) |
+| **payments-data-platform** | CI: tests on `main` | passed | [`Sep 27, 2026`](https://github.com/HarshitGadge/payments-data-platform/actions/runs/36347526215) |
+| **kafka-databricks-nasa** | CI: tests on `main` | passed | [`Sep 27, 2026`](https://github.com/HarshitGadge/kafka-databricks-nasa/actions/runs/36347502693) |
 <!--LEDGER:END-->
 
 ## For AI agents
