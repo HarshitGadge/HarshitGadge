@@ -172,15 +172,23 @@ flowchart LR
 ## Latest work
 
 <!--ACTIVITY:START-->
-- `Nov 27` merged [Prepare the dashboard for Streamlit Community Cloud](https://github.com/HarshitGadge/medicare-claims-analytics/pull/1) in **medicare-claims-analytics**
-- `Nov 27` merged [Deployable read-only demo: portfolio Q&A on Render](https://github.com/HarshitGadge/agentic-rag-service/pull/3) in **agentic-rag-service**
-- `Nov 25` merged [HelpersTask1462_Process_Fix_the_examples_in_text_rules_md](https://github.com/gpsaggese/helpers/pull/1463) in **gpsaggese/helpers**
-- `Nov 20` opened [UmdTask803_Review_and_automate_GH_project_1](https://github.com/gpsaggese/gpsaggese.github.io/pull/975) in **gpsaggese/gpsaggese.github.io**
+- `Nov 27` merged [Add built-in BM25 and dense retrievers](https://github.com/HarshitGadge/ragbench/pull/2) in **ragbench**
+- `Nov 27` merged [Add the core package: BEIR loader, metrics, bootstrap CIs, plug-in retrievers, CLI](https://github.com/HarshitGadge/ragbench/pull/1) in **ragbench**
+- `Nov 27` merged [Opt-in CORS so the portfolio chat page can call /query](https://github.com/HarshitGadge/agentic-rag-service/pull/4) in **agentic-rag-service**
+- `Nov 27` released [v1.0.0 — fraud screening under a review budget](https://github.com/HarshitGadge/fraud-screening/releases/tag/v1.0.0) of **fraud-screening**
+- `Nov 27` released [v1.0.0 — claims pipeline, high-cost model, live dashboard](https://github.com/HarshitGadge/medicare-claims-analytics/releases/tag/v1.0.0) of **medicare-claims-analytics**
+- `Nov 27` released [v1.0.0 — NASA GCN alerts into a medallion lakehouse](https://github.com/HarshitGadge/kafka-databricks-nasa/releases/tag/v1.0.0) of **kafka-databricks-nasa**
 <!--ACTIVITY:END-->
 
 <sub>A GitHub Action refreshes this list every morning from my public activity.</sub>
 
 <!--RELEASES:START-->
+## Releases
+
+- [**fraud-screening** v1.0.0](https://github.com/HarshitGadge/fraud-screening/releases/tag/v1.0.0) · `Nov 27, 2026`
+- [**medicare-claims-analytics** v1.0.0](https://github.com/HarshitGadge/medicare-claims-analytics/releases/tag/v1.0.0) · `Nov 27, 2026`
+- [**kafka-databricks-nasa** v1.0.0](https://github.com/HarshitGadge/kafka-databricks-nasa/releases/tag/v1.0.0) · `Nov 27, 2026`
+- [**payments-data-platform** v1.0.0](https://github.com/HarshitGadge/payments-data-platform/releases/tag/v1.0.0) · `Nov 27, 2026`
 <!--RELEASES:END-->
 
 ## Toolbox
